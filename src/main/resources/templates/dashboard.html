@@ -1,0 +1,138 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Mess Dashboard</title>-->
+<!--    &lt;!&ndash; Bootstrap CDN &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    &lt;!&ndash; Chart.js CDN (Optional for charts) &ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            background-color: #f8f9fa;-->
+<!--        }-->
+<!--        .card {-->
+<!--            border-radius: 12px;-->
+<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.1);-->
+<!--        }-->
+<!--        .card h2 {-->
+<!--            font-size: 28px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+<!--        .card h5 {-->
+<!--            color: #555;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="container mt-4">-->
+
+<!--    &lt;!&ndash; Page Title &ndash;&gt;-->
+<!--    <h2 class="text-center mb-4">Mess Dashboard</h2>-->
+
+<!--    &lt;!&ndash; Summary Cards &ndash;&gt;-->
+<!--    <div class="row g-4 mb-5">-->
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="card p-3 text-center">-->
+<!--                <h5>Total Members</h5>-->
+<!--                <h2 th:text="${summary.totalMembers}">0</h2>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="card p-3 text-center">-->
+<!--                <h5>Total Meals</h5>-->
+<!--                <h2 th:text="${summary.totalMeals}">0</h2>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="card p-3 text-center">-->
+<!--                <h5>Total Expense</h5>-->
+<!--                <h2 th:text="${summary.totalExpense} + ' ৳'">0</h2>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="card p-3 text-center">-->
+<!--                <h5>Meal Rate</h5>-->
+<!--                <h2 th:text="${summary.mealRate}">0</h2>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Optional: Meal & Expense Chart &ndash;&gt;-->
+<!--    <div class="row g-4">-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="card p-3">-->
+<!--                <h5>Daily Meals</h5>-->
+<!--                <canvas id="mealChart"></canvas>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-6">-->
+<!--            <div class="card p-3">-->
+<!--                <h5>Daily Expenses</h5>-->
+<!--                <canvas id="expenseChart"></canvas>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--&lt;!&ndash; Chart.js Script &ndash;&gt;-->
+<!--<script th:inline="javascript">-->
+<!--    /* Meal Chart */-->
+<!--    var mealCtx = document.getElementById('mealChart').getContext('2d');-->
+<!--    var mealChart = new Chart(mealCtx, {-->
+<!--        type: 'bar',-->
+<!--        data: {-->
+<!--            labels: /*[[${mealChart.labels}]]*/ ["Mon","Tue","Wed","Thu","Fri"],-->
+<!--            datasets: [{-->
+<!--                label: 'Meals',-->
+<!--                data: /*[[${mealChart.data}]]*/ [12, 15, 10, 18, 14],-->
+<!--                backgroundColor: 'rgba(54, 162, 235, 0.6)',-->
+<!--                borderColor: 'rgba(54, 162, 235, 1)',-->
+<!--                borderWidth: 1-->
+<!--            }]-->
+<!--        },-->
+<!--        options: {-->
+<!--            responsive: true,-->
+<!--            scales: {-->
+<!--                y: { beginAtZero: true }-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+
+<!--    /* Expense Chart */-->
+<!--    var expenseCtx = document.getElementById('expenseChart').getContext('2d');-->
+<!--    var expenseChart = new Chart(expenseCtx, {-->
+<!--        type: 'line',-->
+<!--        data: {-->
+<!--            labels: /*[[${expenseChart.labels}]]*/ ["Mon","Tue","Wed","Thu","Fri"],-->
+<!--            datasets: [{-->
+<!--                label: 'Expense',-->
+<!--                data: /*[[${expenseChart.data}]]*/ [1200, 1500, 900, 1800, 1400],-->
+<!--                fill: true,-->
+<!--                backgroundColor: 'rgba(255, 99, 132, 0.2)',-->
+<!--                borderColor: 'rgba(255, 99, 132, 1)',-->
+<!--                tension: 0.3-->
+<!--            }]-->
+<!--        },-->
+<!--        options: {-->
+<!--            responsive: true,-->
+<!--            scales: {-->
+<!--                y: { beginAtZero: true }-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
