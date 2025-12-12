@@ -1,0 +1,113 @@
+/* === Login Page (Improved Colors) === */
+.login-page {
+    background: linear-gradient(135deg, #b3fffd 0%, #d4c4ff 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Login Box */
+.login-page .login-container {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.15);
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Header */
+.login-page .login-header {
+    background: linear-gradient(135deg, #38b6ff 0%, #7a5cff 100%);
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+}
+
+.login-page .login-header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.login-page .login-header p {
+    opacity: 0.95;
+    font-size: 14px;
+}
+
+/* Body */
+.login-page .login-body {
+    padding: 40px 30px;
+}
+
+/* Alerts */
+.login-page .alert {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background: #d1f7e1;
+    color: #0d7a40;
+    border: 1px solid #a2e6bd;
+}
+
+.alert-error {
+    background: #ffe0e3;
+    color: #9e1c2e;
+    border: 1px solid #ffbcc2;
+}
+
+/* Inputs */
+.login-page .form-group {
+    margin-bottom: 25px;
+}
+
+.login-page .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #222;
+    font-size: 14px;
+}
+
+.login-page .form-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e5e5e5;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+.login-page .form-group input:focus {
+    outline: none;
+    border-color: #38b6ff;
+    box-shadow: 0 0 0 3px rgba(56,182,255,0.25);
+}
+
+/* Button */
+.login-page .btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #38b6ff 0%, #7a5cff 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.login-page .btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(122,92,255,0.35);
+}
+
+.login-page .btn-login:active {
+    transform: translateY(0);
+}

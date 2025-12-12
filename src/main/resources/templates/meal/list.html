@@ -1,0 +1,810 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Meals</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<div th:include="navbar::navbar"></div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div th:fragment="content">&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        .page-header {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding-bottom: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-bottom: 3px solid #667eea;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .page-header h2 {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 28px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .filter-box {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: linear-gradient(135deg, #fff5e6 0%, #ffe0b2 100%);&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 25px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 25px;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 6px rgba(0,0,0,0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .filter-form {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex-wrap: wrap;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .filter-form label {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: 600;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .filter-form select {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border: 2px solid #ddd;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 14px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .filter-form select:focus {&ndash;&gt;-->
+<!--&lt;!&ndash;            outline: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #ff9800;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stats {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: grid;&ndash;&gt;-->
+<!--&lt;!&ndash;            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 12px rgba(0,0,0,0.08);&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-top: 4px solid;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: transform 0.3s;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: translateY(-5px);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card.breakfast {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #ffc107;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card.lunch {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #28a745;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card.dinner {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #17a2b8;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card.snacks {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #ff5722;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card .icon {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 32px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card .label {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #666;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-transform: uppercase;&ndash;&gt;-->
+<!--&lt;!&ndash;            letter-spacing: 0.5px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-stat-card .value {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 24px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meals-grid {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: grid;&ndash;&gt;-->
+<!--&lt;!&ndash;            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            overflow: hidden;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 12px rgba(0,0,0,0.08);&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-top: 5px solid;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card.breakfast {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #ffc107;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card.lunch {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #28a745;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card.dinner {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #17a2b8;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card.snacks {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #ff5722;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: translateY(-5px);&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 8px 20px rgba(0,0,0,0.12);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card-header {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card-header .meal-type {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: inline-block;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 6px 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: 600;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-transform: uppercase;&ndash;&gt;-->
+<!--&lt;!&ndash;            letter-spacing: 0.5px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-type.breakfast {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #fff3e0;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #e65100;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-type.lunch {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #e8f5e9;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #2e7d32;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-type.dinner {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #e1f5fe;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #01579b;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-type.snacks {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #fce4ec;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #c2185b;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card-header .date {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 18px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card-body {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-description {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #666;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 14px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            line-height: 1.6;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-info {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: grid;&ndash;&gt;-->
+<!--&lt;!&ndash;            grid-template-columns: repeat(3, 1fr);&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-info-item {&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #f8f9fa;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-info-item .label {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 11px;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #999;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-transform: uppercase;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-info-item .value {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 18px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-card-footer {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 15px 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #f8f9fa;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-top: 1px solid #e0e0e0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .created-by {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #666;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .created-by .avatar {&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;            height: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 50%;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .meal-actions {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .btn-sm {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 6px 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 11px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 6px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: inline-flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 4px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .empty-state {&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 80px 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 12px rgba(0,0,0,0.08);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .empty-state-icon {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 80px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            opacity: 0.3;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div class="page-header">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h2>🍽️ Meal Management</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a th:href="@{/meals/add}" class="btn" th:if="${session.loggedInUser.isLeader}">&ndash;&gt;-->
+<!--&lt;!&ndash;            ➕ Add New Meal&ndash;&gt;-->
+<!--&lt;!&ndash;        </a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div class="filter-box">&ndash;&gt;-->
+<!--&lt;!&ndash;        <form th:action="@{/meals}" method="get" class="filter-form">&ndash;&gt;-->
+<!--&lt;!&ndash;            <label>📅 Filter by:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;            <select name="month" th:value="${selectedMonth}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <option th:each="m : ${#numbers.sequence(1, 12)}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:value="${m}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:text="${m}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:selected="${m == selectedMonth}">1</option>&ndash;&gt;-->
+<!--&lt;!&ndash;            </select>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <select name="year" th:value="${selectedYear}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <option th:each="y : ${#numbers.sequence(2020, 2030)}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:value="${y}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:text="${y}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:selected="${y == selectedYear}">2024</option>&ndash;&gt;-->
+<!--&lt;!&ndash;            </select>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <button type="submit" class="btn">🔍 Filter</button>&ndash;&gt;-->
+<!--&lt;!&ndash;        </form>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Meal Type Stats &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="meal-stats" th:if="${!meals.isEmpty()}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="meal-stat-card breakfast">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="icon">🌅</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="label">Breakfast</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="value" th:text="${#lists.size(meals.?[mealType == 'breakfast'])}">0</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="meal-stat-card lunch">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="icon">🌞</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="label">Lunch</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="value" th:text="${#lists.size(meals.?[mealType == 'lunch'])}">0</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="meal-stat-card dinner">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="icon">🌙</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="label">Dinner</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="value" th:text="${#lists.size(meals.?[mealType == 'dinner'])}">0</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="meal-stat-card snacks">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="icon">☕</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="label">Snacks</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="value" th:text="${#lists.size(meals.?[mealType == 'snacks'])}">0</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Meals Grid &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="meals-grid" th:if="${!meals.isEmpty()}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="meal-card" th:each="meal : ${meals}" th:classappend="${meal.mealType}">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="meal-card-header">&ndash;&gt;-->
+<!--&lt;!&ndash;                <span class="meal-type" th:classappend="${meal.mealType}" th:text="${meal.mealType}">Type</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="date">&ndash;&gt;-->
+<!--&lt;!&ndash;                    📅 <span th:text="${#temporals.format(meal.mealDate, 'dd MMMM yyyy')}">Date</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <div class="meal-card-body">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="meal-description" th:text="${meal.description}">Menu description</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <div class="meal-info">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="meal-info-item">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="label">Total Cost</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="value">৳<span th:text="${#numbers.formatDecimal(meal.cost, 1, 0)}">0</span></div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="meal-info-item">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="label">Attendees</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="value" th:text="${meal.totalAttendees}">0</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="meal-info-item">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="label">Per Person</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="value">৳<span th:text="${#numbers.formatDecimal(meal.perPersonCost, 1, 0)}">0</span></div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <div class="meal-card-footer">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="created-by">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="avatar" th:text="${meal.createdByName.substring(0,1)}">A</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <span th:text="${meal.createdByName}">Creator</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <div class="meal-actions">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a th:href="@{/meals/attendance/{id}(id=${meal.mealId})}"&ndash;&gt;-->
+<!--&lt;!&ndash;                       class="btn btn-sm"&ndash;&gt;-->
+<!--&lt;!&ndash;                       th:if="${session.loggedInUser.isLeader}">&ndash;&gt;-->
+<!--&lt;!&ndash;                        👥 Attendance&ndash;&gt;-->
+<!--&lt;!&ndash;                    </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a th:href="@{/meals/delete/{id}(id=${meal.mealId})}"&ndash;&gt;-->
+<!--&lt;!&ndash;                       class="btn btn-danger btn-sm"&ndash;&gt;-->
+<!--&lt;!&ndash;                       th:if="${session.loggedInUser.isLeader}"&ndash;&gt;-->
+<!--&lt;!&ndash;                       onclick="return confirm('Delete this meal?')">&ndash;&gt;-->
+<!--&lt;!&ndash;                        🗑️&ndash;&gt;-->
+<!--&lt;!&ndash;                    </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Empty State &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="empty-state" th:if="${meals.isEmpty()}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="empty-state-icon">🍽️</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <h3>No Meals Found</h3>&ndash;&gt;-->
+<!--&lt;!&ndash;        <p>No meals have been recorded for this month.</p>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a th:href="@{/meals/add}" class="btn" th:if="${session.loggedInUser.isLeader}">&ndash;&gt;-->
+<!--&lt;!&ndash;            ➕ Add First Meal&ndash;&gt;-->
+<!--&lt;!&ndash;        </a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Meal Management</title>-->
+
+<!--    &lt;!&ndash; Bootstrap &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        body {-->
+<!--            background: #f4f6f9;-->
+<!--        }-->
+
+<!--        .page-header {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            margin-bottom: 25px;-->
+<!--            padding-bottom: 15px;-->
+<!--            border-bottom: 3px solid #6f42c1;-->
+<!--        }-->
+
+<!--        .meal-card {-->
+<!--            border-radius: 12px;-->
+<!--            overflow: hidden;-->
+<!--            border-left: 6px solid;-->
+<!--            background: #fff;-->
+<!--            box-shadow: 0 5px 12px rgba(0,0,0,0.08);-->
+<!--            transition: .3s;-->
+<!--        }-->
+
+<!--        .meal-card:hover {-->
+<!--            transform: translateY(-5px);-->
+<!--        }-->
+
+<!--        .meal-card.breakfast { border-color: #ffc107; }-->
+<!--        .meal-card.lunch { border-color: #28a745; }-->
+<!--        .meal-card.dinner { border-color: #17a2b8; }-->
+<!--        .meal-card.snacks { border-color: #ff5722; }-->
+
+<!--        .meal-icon {-->
+<!--            font-size: 45px;-->
+<!--            opacity: 0.7;-->
+<!--        }-->
+
+<!--        .stat-card {-->
+<!--            background: white;-->
+<!--            border-radius: 12px;-->
+<!--            padding: 20px;-->
+<!--            box-shadow: 0 3px 10px rgba(0,0,0,0.08);-->
+<!--            text-align: center;-->
+<!--            border-top: 4px solid;-->
+<!--        }-->
+
+<!--        .stat-card span {-->
+<!--            font-size: 28px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        .stat-label {-->
+<!--            font-size: 12px;-->
+<!--            color: #777;-->
+<!--            text-transform: uppercase;-->
+<!--        }-->
+
+<!--        .empty-state {-->
+<!--            padding: 70px;-->
+<!--            background: white;-->
+<!--            border-radius: 12px;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .empty-icon {-->
+<!--            font-size: 80px;-->
+<!--            opacity: 0.3;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<div class="container py-4">-->
+
+<!--    &lt;!&ndash; Header &ndash;&gt;-->
+<!--    <div class="page-header">-->
+<!--        <h2>🍽️ Meal Management</h2>-->
+
+<!--        <a th:href="@{/meals/add}" class="btn btn-primary"-->
+<!--           th:if="${session.loggedInUser.isLeader}">-->
+<!--            ➕ Add Meal-->
+<!--        </a>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Filter Section &ndash;&gt;-->
+<!--    <form th:action="@{/meals}" method="get" class="row g-3 mb-4">-->
+<!--        <div class="col-md-3">-->
+<!--            <label class="form-label">Select Month</label>-->
+<!--            <select class="form-select" name="month">-->
+<!--                <option th:each="m : ${#numbers.sequence(1,12)}"-->
+<!--                        th:value="${m}"-->
+<!--                        th:text="'Month ' + m"-->
+<!--                        th:selected="${m == selectedMonth}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3">-->
+<!--            <label class="form-label">Select Year</label>-->
+<!--            <select class="form-select" name="year">-->
+<!--                <option th:each="y : ${#numbers.sequence(2020,2030)}"-->
+<!--                        th:value="${y}"-->
+<!--                        th:text="${y}"-->
+<!--                        th:selected="${y == selectedYear}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3 d-flex align-items-end">-->
+<!--            <button class="btn btn-dark w-100">🔍 Filter</button>-->
+<!--        </div>-->
+<!--    </form>-->
+
+<!--    &lt;!&ndash; Stats Section &ndash;&gt;-->
+<!--    <div class="row mb-4" th:if="${!meals.isEmpty()}">-->
+<!--        <div class="col-md-3">-->
+<!--            <div class="stat-card" style="border-color:#ffc107;">-->
+<!--                <div class="meal-icon">🌅</div>-->
+<!--                <span th:text="${#lists.size(meals.?[mealType=='breakfast'])}">0</span>-->
+<!--                <div class="stat-label">Breakfast</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="stat-card" style="border-color:#28a745;">-->
+<!--                <div class="meal-icon">🌞</div>-->
+<!--                <span th:text="${#lists.size(meals.?[mealType=='lunch'])}">0</span>-->
+<!--                <div class="stat-label">Lunch</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="stat-card" style="border-color:#17a2b8;">-->
+<!--                <div class="meal-icon">🌙</div>-->
+<!--                <span th:text="${#lists.size(meals.?[mealType=='dinner'])}">0</span>-->
+<!--                <div class="stat-label">Dinner</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="stat-card" style="border-color:#ff5722;">-->
+<!--                <div class="meal-icon">☕</div>-->
+<!--                <span th:text="${#lists.size(meals.?[mealType=='snacks'])}">0</span>-->
+<!--                <div class="stat-label">Snacks</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+
+<!--    &lt;!&ndash; Meals Grid &ndash;&gt;-->
+<!--    <div class="row g-4" th:if="${!meals.isEmpty()}">-->
+<!--        <div class="col-md-4" th:each="meal : ${meals}">-->
+<!--&lt;!&ndash;            <div class="meal-card" th:classappend="${meal.mealType}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="p-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <span th:text="${meal.mealType.toUpperCase()}"></span> •&ndash;&gt;-->
+<!--&lt;!&ndash;                        <small th:text="${#temporals.format(meal.mealDate,'dd MMM yyyy')}"></small>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </h5>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <p class="text-muted" th:text="${meal.description}">&ndash;&gt;-->
+<!--&lt;!&ndash;                        Meal description here&ndash;&gt;-->
+<!--&lt;!&ndash;                    </p>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <ul class="list-group mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <li class="list-group-item d-flex justify-content-between">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>Total Cost</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <strong>৳ <span th:text="${meal.cost}">0</span></strong>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </li>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <li class="list-group-item d-flex justify-content-between">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>Attendees</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <strong th:text="${meal.totalAttendees}">0</strong>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </li>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <li class="list-group-item d-flex justify-content-between">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>Per Person</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <strong>৳ <span th:text="${meal.perPersonCost}">0</span></strong>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </ul>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <div class="d-flex justify-content-between">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <small class="text-muted">By <b th:text="${meal.createdByName}">User</b></small>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        <div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <a th:href="@{/meals/attendance/{id}(id=${meal.mealId})}"&ndash;&gt;-->
+<!--&lt;!&ndash;                               class="btn btn-sm btn-outline-primary"&ndash;&gt;-->
+<!--&lt;!&ndash;                               th:if="${session.loggedInUser.isLeader}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                👥&ndash;&gt;-->
+<!--&lt;!&ndash;                            </a>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                            <a th:href="@{/meals/delete/{id}(id=${meal.mealId})}"&ndash;&gt;-->
+<!--&lt;!&ndash;                               class="btn btn-sm btn-outline-danger"&ndash;&gt;-->
+<!--&lt;!&ndash;                               th:if="${session.loggedInUser.isLeader}"&ndash;&gt;-->
+<!--&lt;!&ndash;                               onclick="return confirm('Delete this meal?')">🗑️</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--            <div class="stat-card" style="border-color:#6f42c1;">-->
+<!--                <div class="meal-icon">🍽️</div>-->
+<!--                <span th:text="${#lists.size(meals.?[mealType=='breakfast'])-->
+<!--                    + #lists.size(meals.?[mealType=='lunch'])-->
+<!--                    + #lists.size(meals.?[mealType=='dinner'])}">0</span>-->
+<!--                <div class="stat-label">Total Meals</div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Empty State &ndash;&gt;-->
+<!--    <div class="empty-state" th:if="${meals.isEmpty()}">-->
+<!--        <div class="empty-icon">🍽️</div>-->
+<!--        <h3>No Meals Found</h3>-->
+<!--        <p>No meal entries available for this month.</p>-->
+
+<!--        <a th:href="@{/meals/add}"-->
+<!--           class="btn btn-primary mt-3"-->
+<!--           th:if="${session.loggedInUser.isLeader}">-->
+<!--            ➕ Add First Meal-->
+<!--        </a>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meal Management</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { background: #f4f6f9; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid #6f42c1; }
+        .meal-card { border-radius: 12px; overflow: hidden; border-left: 6px solid; background: #fff; box-shadow: 0 5px 12px rgba(0,0,0,0.08); transition: .3s; }
+        .meal-card:hover { transform: translateY(-5px); }
+        .meal-card.breakfast { border-color: #ffc107; }
+        .meal-card.lunch { border-color: #28a745; }
+        .meal-card.dinner { border-color: #17a2b8; }
+        .meal-card.snacks { border-color: #ff5722; }
+        .meal-icon { font-size: 45px; opacity: 0.7; }
+        .stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); text-align: center; border-top: 4px solid; margin-bottom:15px;}
+        .stat-card span { font-size: 28px; font-weight: bold; }
+        .stat-label { font-size: 12px; color: #777; text-transform: uppercase; }
+        .empty-state { padding: 70px; background: white; border-radius: 12px; text-align: center; }
+        .empty-icon { font-size: 80px; opacity: 0.3; }
+    </style>
+</head>
+
+<body>
+<div th:include="navbar::navbar"></div>
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="page-header">
+        <h2>🍽️ Meal Management</h2>
+        <a th:href="@{/meals/add}" class="btn btn-primary" th:if="${session.loggedInUser.isLeader}">➕ Add Meal</a>
+    </div>
+
+    <!-- Filter -->
+    <form th:action="@{/meals}" method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <label class="form-label">Select Month</label>
+            <select class="form-select" name="month">
+                <option th:each="m : ${#numbers.sequence(1,12)}" th:value="${m}" th:text="'Month ' + m" th:selected="${m == selectedMonth}"></option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Select Year</label>
+            <select class="form-select" name="year">
+                <option th:each="y : ${#numbers.sequence(2020,2030)}" th:value="${y}" th:text="${y}" th:selected="${y == selectedYear}"></option>
+            </select>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-dark w-100">🔍 Filter</button>
+        </div>
+    </form>
+
+    <!-- Meal Stats: Total Breakfast + Lunch + Dinner -->
+    <div class="row mb-4" th:if="${!meals.isEmpty()}">
+        <div class="col-md-3">
+            <div class="stat-card" style="border-color:#6f42c1;">
+                <div class="meal-icon">🍽️</div>
+                <span th:text="${#lists.size(meals.?[mealType=='breakfast'])
+                                 + #lists.size(meals.?[mealType=='lunch'])
+                                 + #lists.size(meals.?[mealType=='dinner'])}">0</span>
+                <div class="stat-label">Total Meals</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card" style="border-color:#ffc107;">
+                <div class="meal-icon">🌅</div>
+                <span th:text="${#lists.size(meals.?[mealType=='breakfast'])}">0</span>
+                <div class="stat-label">Breakfast</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card" style="border-color:#28a745;">
+                <div class="meal-icon">🌞</div>
+                <span th:text="${#lists.size(meals.?[mealType=='lunch'])}">0</span>
+                <div class="stat-label">Lunch</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card" style="border-color:#17a2b8;">
+                <div class="meal-icon">🌙</div>
+                <span th:text="${#lists.size(meals.?[mealType=='dinner'])}">0</span>
+                <div class="stat-label">Dinner</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meals Grid -->
+    <div class="row g-4" th:if="${!meals.isEmpty()}">
+        <div class="col-md-4" th:each="meal : ${meals}">
+            <div class="meal-card" th:classappend="${meal.mealType}">
+                <div class="p-3">
+                    <h5>
+                        <span th:text="${meal.mealType.toUpperCase()}"></span> •
+                        <small th:text="${#temporals.format(meal.mealDate,'dd MMM yyyy')}"></small>
+                    </h5>
+
+                    <p class="text-muted" th:text="${meal.description}">Meal description here</p>
+
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total Cost</span>
+                            <strong>৳ <span th:text="${meal.cost}">0</span></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Attendees</span>
+                            <strong th:text="${meal.totalAttendees}">0</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Per Person</span>
+                            <strong>৳ <span th:text="${meal.perPersonCost}">0</span></strong>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">By <b th:text="${meal.createdByName}">User</b></small>
+                        <div>
+                            <a th:href="@{/meals/edit/{id}(id=${meal.mealId})}"
+                               class="btn btn-sm btn-outline-warning"
+                               th:if="${session.loggedInUser.isLeader}">✏️ Edit</a>
+
+                            <a th:href="@{/meals/attendance/{id}(id=${meal.mealId})}"
+                               class="btn btn-sm btn-outline-primary"
+                               th:if="${session.loggedInUser.isLeader}">👥</a>
+
+                            <a th:href="@{/meals/delete/{id}(id=${meal.mealId})}"
+                               class="btn btn-sm btn-outline-danger"
+                               th:if="${session.loggedInUser.isLeader}"
+                               onclick="return confirm('Delete this meal?')">🗑️</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" th:if="${meals.isEmpty()}">
+        <div class="empty-icon">🍽️</div>
+        <h3>No Meals Found</h3>
+        <p>No meal entries available for this month.</p>
+        <a th:href="@{/meals/add}" class="btn btn-primary mt-3" th:if="${session.loggedInUser.isLeader}">➕ Add First Meal</a>
+    </div>
+
+</div>
+</body>
+</html>

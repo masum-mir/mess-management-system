@@ -1,138 +1,185 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Mess Dashboard</title>-->
-<!--    &lt;!&ndash; Bootstrap CDN &ndash;&gt;-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">-->
-<!--    &lt;!&ndash; Chart.js CDN (Optional for charts) &ndash;&gt;-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            background-color: #f8f9fa;-->
-<!--        }-->
-<!--        .card {-->
-<!--            border-radius: 12px;-->
-<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.1);-->
-<!--        }-->
-<!--        .card h2 {-->
-<!--            font-size: 28px;-->
-<!--            font-weight: bold;-->
-<!--        }-->
-<!--        .card h5 {-->
-<!--            color: #555;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Mess Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-<!--<div class="container mt-4">-->
+</head>
+<body>
+<div th:include="navbar::navbar"></div>
+<div class="container">
+<!--    &lt;!&ndash; Flash Messages &ndash;&gt;-->
+<!--    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>-->
+<!--    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>-->
 
-<!--    &lt;!&ndash; Page Title &ndash;&gt;-->
-<!--    <h2 class="text-center mb-4">Mess Dashboard</h2>-->
+    <h1 style="margin-bottom: 2rem;">Dashboard</h1>
 
-<!--    &lt;!&ndash; Summary Cards &ndash;&gt;-->
-<!--    <div class="row g-4 mb-5">-->
-
-<!--        <div class="col-md-3">-->
-<!--            <div class="card p-3 text-center">-->
-<!--                <h5>Total Members</h5>-->
-<!--                <h2 th:text="${summary.totalMembers}">0</h2>-->
-<!--            </div>-->
+<!--    &lt;!&ndash; Dashboard Cards &ndash;&gt;-->
+    <div class="dashboard-cards">
+        <div class="dashboard-card info">
+            <h3>Active Members</h3>
+            <div class="value" th:text="${activeMemberCount}">0</div>
+        </div>
+<!--        <div class="dashboard-card success">-->
+<!--            <h3>Total Collections (This Month)</h3>-->
+<!--            <div class="value" th:text="${#numbers.formatDecimal(summary.totalCollections, 0, 'COMMA', 2, 'POINT')} + ' ৳'">0 ৳</div>-->
 <!--        </div>-->
-
-<!--        <div class="col-md-3">-->
-<!--            <div class="card p-3 text-center">-->
-<!--                <h5>Total Meals</h5>-->
-<!--                <h2 th:text="${summary.totalMeals}">0</h2>-->
-<!--            </div>-->
+<!--        <div class="dashboard-card warning">-->
+<!--            <h3>Total Expenses (This Month)</h3>-->
+<!--            <div class="value" th:text="${#numbers.formatDecimal(summary.totalExpenses, 0, 'COMMA', 2, 'POINT')} + ' ৳'">0 ৳</div>-->
 <!--        </div>-->
-
-<!--        <div class="col-md-3">-->
-<!--            <div class="card p-3 text-center">-->
-<!--                <h5>Total Expense</h5>-->
-<!--                <h2 th:text="${summary.totalExpense} + ' ৳'">0</h2>-->
-<!--            </div>-->
+<!--        <div class="dashboard-card" th:classappend="${summary.balance >= 0 ? 'success' : 'warning'}">-->
+<!--            <h3>Balance</h3>-->
+<!--            <div class="value" th:text="${#numbers.formatDecimal(summary.balance, 0, 'COMMA', 2, 'POINT')} + ' ৳'">0 ৳</div>-->
 <!--        </div>-->
+    </div>
 
-<!--        <div class="col-md-3">-->
-<!--            <div class="card p-3 text-center">-->
-<!--                <h5>Meal Rate</h5>-->
-<!--                <h2 th:text="${summary.mealRate}">0</h2>-->
+<!--    &lt;!&ndash; Monthly Summary Card &ndash;&gt;-->
+    <div class="card">
+        <div class="card-header">
+            Current Month Summary
+            <span style="font-size: 1rem; font-weight: normal; color: #7f8c8d;">
+                    (Month: <span th:text="${currentMonth}">1</span>, Year: <span th:text="${currentYear}">2024</span>)
+                </span>
+        </div>
+
+        <div class="form-row">
+<!--            <div class="form-group">-->
+<!--                <label class="form-label">Total Meal Costs</label>-->
+<!--                <div style="font-size: 1.5rem; font-weight: bold; color: #3498db;">-->
+<!--                    <span th:text="${#numbers.formatDecimal(summary.totalMealCosts, 0, 'COMMA', 2, 'POINT')}">0</span> ৳-->
+<!--                </div>-->
 <!--            </div>-->
-<!--        </div>-->
+<!--            <div class="form-group">-->
+<!--                <label class="form-label">Total Meals Served</label>-->
+<!--                <div style="font-size: 1.5rem; font-weight: bold; color: #3498db;">-->
+<!--                    <span th:text="${summary.totalMealsServed}">0</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label class="form-label">Active Members</label>-->
+<!--                <div style="font-size: 1.5rem; font-weight: bold; color: #3498db;">-->
+<!--                    <span th:text="${summary.activeMembers}">0</span>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </div>
 
+<!--    &lt;!&ndash; Quick Actions &ndash;&gt;-->
+<!--    <div class="card">-->
+<!--        <div class="card-header">Quick Actions</div>-->
+<!--        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">-->
+<!--            <a th:href="@{/members/add}" class="btn btn-success">➕ Add Member</a>-->
+<!--            <a th:href="@{/expenses/add}" class="btn btn-warning">💰 Add Expense</a>-->
+<!--            <a th:href="@{/collections/add}" class="btn">💵 Add Collection</a>-->
+<!--            <a th:href="@{/meals/add}" class="btn">🍽️ Add Meal</a>-->
+<!--            <a th:href="@{/reports/member-report}" class="btn">📊 View Reports</a>-->
+<!--        </div>-->
 <!--    </div>-->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dashboard - Bootstrap 5</title>
 
-<!--    &lt;!&ndash; Optional: Meal & Expense Chart &ndash;&gt;-->
-<!--    <div class="row g-4">-->
-<!--        <div class="col-md-6">-->
-<!--            <div class="card p-3">-->
-<!--                <h5>Daily Meals</h5>-->
-<!--                <canvas id="mealChart"></canvas>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!-- Bootstrap 5 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!--        <div class="col-md-6">-->
-<!--            <div class="card p-3">-->
-<!--                <h5>Daily Expenses</h5>-->
-<!--                <canvas id="expenseChart"></canvas>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+        <style>
+            /* Card Icon Style */
+            .dashboard-card {
+                position: relative;
+                overflow: hidden;
+                padding: 20px;
+                border-radius: 12px;
+                color: #fff;
+            }
+            .dashboard-card svg {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;
+                opacity: 0.2;
+                width: 70px;
+                height: 70px;
+            }
+            .chat-box {
+                height: 350px;
+                overflow-y: auto;
+            }
+            .direct-chat-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 10px;
+            }
+            .direct-chat-text {
+                background: #e9ecef;
+                padding: 10px 15px;
+                border-radius: 10px;
+                display: inline-block;
+            }
+            .direct-chat-msg.end {
+                text-align: right;
+            }
+            .direct-chat-msg.end .direct-chat-text {
+                background: #cfe2ff;
+            }
+        </style>
+    </head>
 
-<!--</div>-->
 
-<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>-->
+    <body>
 
-<!--&lt;!&ndash; Chart.js Script &ndash;&gt;-->
-<!--<script th:inline="javascript">-->
-<!--    /* Meal Chart */-->
-<!--    var mealCtx = document.getElementById('mealChart').getContext('2d');-->
-<!--    var mealChart = new Chart(mealCtx, {-->
-<!--        type: 'bar',-->
-<!--        data: {-->
-<!--            labels: /*[[${mealChart.labels}]]*/ ["Mon","Tue","Wed","Thu","Fri"],-->
-<!--            datasets: [{-->
-<!--                label: 'Meals',-->
-<!--                data: /*[[${mealChart.data}]]*/ [12, 15, 10, 18, 14],-->
-<!--                backgroundColor: 'rgba(54, 162, 235, 0.6)',-->
-<!--                borderColor: 'rgba(54, 162, 235, 1)',-->
-<!--                borderWidth: 1-->
-<!--            }]-->
-<!--        },-->
-<!--        options: {-->
-<!--            responsive: true,-->
-<!--            scales: {-->
-<!--                y: { beginAtZero: true }-->
-<!--            }-->
-<!--        }-->
-<!--    });-->
+    <div class="container-fluid py-4">
 
-<!--    /* Expense Chart */-->
-<!--    var expenseCtx = document.getElementById('expenseChart').getContext('2d');-->
-<!--    var expenseChart = new Chart(expenseCtx, {-->
-<!--        type: 'line',-->
-<!--        data: {-->
-<!--            labels: /*[[${expenseChart.labels}]]*/ ["Mon","Tue","Wed","Thu","Fri"],-->
-<!--            datasets: [{-->
-<!--                label: 'Expense',-->
-<!--                data: /*[[${expenseChart.data}]]*/ [1200, 1500, 900, 1800, 1400],-->
-<!--                fill: true,-->
-<!--                backgroundColor: 'rgba(255, 99, 132, 0.2)',-->
-<!--                borderColor: 'rgba(255, 99, 132, 1)',-->
-<!--                tension: 0.3-->
-<!--            }]-->
-<!--        },-->
-<!--        options: {-->
-<!--            responsive: true,-->
-<!--            scales: {-->
-<!--                y: { beginAtZero: true }-->
-<!--            }-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
+        <!-- Row 1: Widgets -->
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card bg-primary">
+                    <h2>Member</h2>
+                    <svg viewBox="0 0 24 24"><path d="M2.25 2.25a.75.75 ..."/></svg>
+                </div>
+            </div>
 
-<!--</body>-->
-<!--</html>-->
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card bg-success">
+                    <h2>Expenses</h2>
+                    <svg viewBox="0 0 24 24"><path d="M18.375 2.25c-1.035..."/></svg>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card bg-warning text-dark">
+                    <h2>Meals</h2>
+                    <svg viewBox="0 0 24 24"><path d="M6.25 6.375a4.125..."/></svg>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card bg-danger">
+                    <h2>Report</h2>
+                    <svg viewBox="0 0 24 24"><path d="M2.25 13.5a8.25..."/></svg>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+    </html>
+
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
