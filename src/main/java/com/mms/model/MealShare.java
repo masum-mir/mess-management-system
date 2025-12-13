@@ -1,13 +1,13 @@
 package com.mms.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MealShare {
@@ -17,6 +17,4 @@ public class MealShare {
     private BigDecimal shareAmount;
     private LocalDateTime calculatedAt;
 
-    // Additional field for display
-    private String memberName;
 }

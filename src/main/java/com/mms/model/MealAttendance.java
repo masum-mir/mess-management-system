@@ -1,9 +1,14 @@
 package com.mms.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Data
+@Getter
+@Setter
 public class MealAttendance {
     private Integer attendanceId;
     private Integer mealId;
@@ -12,7 +17,4 @@ public class MealAttendance {
     private Integer markedBy;
     private LocalDateTime markedAt;
 
-    // Additional fields
-    private String memberName;
-    private String markedByName;
 }
