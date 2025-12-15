@@ -1,117 +1,1289 @@
 
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Expenses</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash; Navbar &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<div th:include="navbar :: navbar"></div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="container py-4">&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Page Header &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="d-flex justify-content-between align-items-center mb-4">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h2 class="fw-bold">💳 Expense Management</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <a th:if="${session.loggedInUser.isManager}"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;           th:href="@{/expenses/add}"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;           class="btn btn-primary">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            ➕ Add Expense&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <button th:if="${session.loggedInUser.isManager}"&ndash;&gt;-->
+<!--&lt;!&ndash;                class="btn btn-primary"&ndash;&gt;-->
+<!--&lt;!&ndash;                data-bs-toggle="modal"&ndash;&gt;-->
+<!--&lt;!&ndash;                data-bs-target="#expenseModal"&ndash;&gt;-->
+<!--&lt;!&ndash;                onclick="openAddModal()">&ndash;&gt;-->
+<!--&lt;!&ndash;            ➕ Add Expense&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Filters &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="card p-3 mb-3 shadow-sm">&ndash;&gt;-->
+<!--&lt;!&ndash;        <form th:action="@{/expenses}" method="get" class="row g-2">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="col-md-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>Month</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                <select name="month" class="form-select">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <option th:each="m : ${#numbers.sequence(1,12)}"&ndash;&gt;-->
+<!--&lt;!&ndash;                            th:value="${m}"&ndash;&gt;-->
+<!--&lt;!&ndash;                            th:text="${m}"&ndash;&gt;-->
+<!--&lt;!&ndash;                            th:selected="${m == selectedMonth}">&ndash;&gt;-->
+<!--&lt;!&ndash;                    </option>&ndash;&gt;-->
+<!--&lt;!&ndash;                </select>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="col-md-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>Year</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                <select name="year" class="form-select">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <option th:each="y : ${#numbers.sequence(2020,2030)}"&ndash;&gt;-->
+<!--&lt;!&ndash;                            th:value="${y}"&ndash;&gt;-->
+<!--&lt;!&ndash;                            th:text="${y}"&ndash;&gt;-->
+<!--&lt;!&ndash;                            th:selected="${y == selectedYear}">&ndash;&gt;-->
+<!--&lt;!&ndash;                    </option>&ndash;&gt;-->
+<!--&lt;!&ndash;                </select>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="col-md-2 d-flex align-items-end">&ndash;&gt;-->
+<!--&lt;!&ndash;                <button class="btn btn-dark w-100">Filter</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </form>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Expense Table &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="card shadow-sm" th:if="${!expenses.isEmpty()}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="table-responsive">&ndash;&gt;-->
+<!--&lt;!&ndash;            <table class="table table-hover align-middle">&ndash;&gt;-->
+<!--&lt;!&ndash;                <thead class="table-primary">&ndash;&gt;-->
+<!--&lt;!&ndash;                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th>Date</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th>Category</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th>Description</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th>Amount</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <th th:if="${session.loggedInUser.isManager}">Actions</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                </thead>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                <tr th:each="expense : ${expenses}">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td th:text="${#temporals.format(expense.expenseDate,'dd MMM yyyy')}"></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <td th:text="${expense.categoryName}"></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <td th:text="${expense.description}"></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <td class="fw-bold text-danger">&ndash;&gt;-->
+<!--&lt;!&ndash;                        ৳ <span th:text="${expense.amount}"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <td th:if="${session.loggedInUser.isManager}">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        <a th:href="@{/expenses/edit/{id}(id=${expense.expenseId})}"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                           class="btn btn-sm btn-warning">Edit</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        <a href="javascript:void(0)"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                           class="btn btn-sm btn-warning"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                           data-bs-toggle="modal"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                           data-bs-target="#expenseModal"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                           onclick="openEditModal([[${expense.expenseId}]])">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            Edit&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        </a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="javascript:void(0)"&ndash;&gt;-->
+<!--&lt;!&ndash;                           class="btn btn-sm btn-warning"&ndash;&gt;-->
+<!--&lt;!&ndash;                           data-bs-toggle="modal"&ndash;&gt;-->
+<!--&lt;!&ndash;                           data-bs-target="#expenseModal"&ndash;&gt;-->
+<!--&lt;!&ndash;                           th:data-expense-id="${expense.expenseId}"&ndash;&gt;-->
+<!--&lt;!&ndash;                           onclick="openEditModal(this.dataset.expenseId)">&ndash;&gt;-->
+<!--&lt;!&ndash;                            Edit&ndash;&gt;-->
+<!--&lt;!&ndash;                        </a>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        <a th:href="@{/expenses/delete/{id}(id=${expense.expenseId})}"&ndash;&gt;-->
+<!--&lt;!&ndash;                           onclick="return confirm('Delete this expense?')"&ndash;&gt;-->
+<!--&lt;!&ndash;                           class="btn btn-sm btn-danger">Delete</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </td>&ndash;&gt;-->
+<!--&lt;!&ndash;                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;            </table>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; Empty State &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="text-center py-5" th:if="${expenses.isEmpty()}">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h4 class="text-muted">No expenses found.</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a th:if="${session.loggedInUser.isManager}"&ndash;&gt;-->
+<!--&lt;!&ndash;           th:href="@{/expenses/add}"&ndash;&gt;-->
+<!--&lt;!&ndash;           class="btn btn-primary mt-3">&ndash;&gt;-->
+<!--&lt;!&ndash;            ➕ Add First Expense&ndash;&gt;-->
+<!--&lt;!&ndash;        </a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash; Expense Modal &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="modal fade" id="expenseModal" tabindex="-1">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="modal-content">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <div class="modal-header bg-primary text-white">&ndash;&gt;-->
+<!--&lt;!&ndash;                <h5 class="modal-title" id="modalTitle">Add Expense</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                <button type="button" class="btn-close btn-close-white"&ndash;&gt;-->
+<!--&lt;!&ndash;                        data-bs-dismiss="modal"></button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <form id="expenseForm" method="post">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="modal-body">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <input type="hidden" name="expenseId" id="expenseId">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    &lt;!&ndash; Date &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label class="form-label">Expense Date</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input type="date" class="form-control"&ndash;&gt;-->
+<!--&lt;!&ndash;                               name="expenseDate" id="expenseDate" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    &lt;!&ndash; Category &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label class="form-label">Category</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <select class="form-select" name="categoryId" id="categoryId" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <option value="">&#45;&#45; Select Category &#45;&#45;</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <option th:each="c : ${categories}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    th:value="${c.categoryId}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    th:text="${c.categoryName}">&ndash;&gt;-->
+<!--&lt;!&ndash;                            </option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    &lt;!&ndash; Amount &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label class="form-label">Amount</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input type="number" step="0.01"&ndash;&gt;-->
+<!--&lt;!&ndash;                               class="form-control"&ndash;&gt;-->
+<!--&lt;!&ndash;                               name="amount" id="amount" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    &lt;!&ndash; Description &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label class="form-label">Description</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <textarea class="form-control"&ndash;&gt;-->
+<!--&lt;!&ndash;                                  name="description" id="description"></textarea>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    &lt;!&ndash; Recorded By &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label class="form-label">Recorded By</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <select class="form-select"&ndash;&gt;-->
+<!--&lt;!&ndash;                                name="recordedBy" id="recordedBy" required>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <option th:each="m : ${members}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    th:if="${m.isManager}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    th:value="${m.memberId}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    th:text="${m.name}">&ndash;&gt;-->
+<!--&lt;!&ndash;                            </option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <div class="modal-footer">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button type="button" class="btn btn-secondary"&ndash;&gt;-->
+<!--&lt;!&ndash;                            data-bs-dismiss="modal">Cancel</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button type="submit" class="btn btn-success">&ndash;&gt;-->
+<!--&lt;!&ndash;                        Save Expense&ndash;&gt;-->
+<!--&lt;!&ndash;                    </button>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </form>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    function openAddModal() {&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById("modalTitle").innerText = "Add Expense";&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById("expenseForm").action = "/expenses/add";&ndash;&gt;-->
+
+<!--&lt;!&ndash;        document.getElementById("expenseId").value = "";&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById("expenseDate").value = "";&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById("categoryId").value = "";&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById("amount").value = "";&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById("description").value = "";&ndash;&gt;-->
+<!--&lt;!&ndash;        document.getElementById("recordedBy").selectedIndex = 0;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;    function openEditModal(id) {&ndash;&gt;-->
+<!--&lt;!&ndash;    document.getElementById("modalTitle").innerText = "Edit Expense";&ndash;&gt;-->
+<!--&lt;!&ndash;    document.getElementById("expenseForm").action = "/expenses/edit/" + id;&ndash;&gt;-->
+
+<!--&lt;!&ndash;    fetch("/expenses/api/" + id)&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(response => response.json())&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(data => {&ndash;&gt;-->
+<!--&lt;!&ndash;            document.getElementById("expenseId").value = data.expenseId;&ndash;&gt;-->
+<!--&lt;!&ndash;            document.getElementById("expenseDate").value = data.expenseDate; // yyyy-MM-dd&ndash;&gt;-->
+<!--&lt;!&ndash;            document.getElementById("categoryId").value = data.categoryId;&ndash;&gt;-->
+<!--&lt;!&ndash;            document.getElementById("amount").value = data.amount;&ndash;&gt;-->
+<!--&lt;!&ndash;            document.getElementById("description").value = data.description ?? "";&ndash;&gt;-->
+<!--&lt;!&ndash;            document.getElementById("recordedBy").value = data.recordedBy;&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+<!--&lt;!&ndash;        .catch(err => alert("Failed to load expense data"));&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Expense Management</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">-->
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);-->
+<!--            &#45;&#45;success-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);-->
+<!--            &#45;&#45;info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);-->
+<!--        }-->
+
+<!--        body {-->
+<!--            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);-->
+<!--            min-height: 100vh;-->
+<!--            padding: 2rem 0;-->
+<!--        }-->
+
+<!--        .main-container {-->
+<!--            background: rgba(255, 255, 255, 0.95);-->
+<!--            border-radius: 20px;-->
+<!--            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .page-header {-->
+<!--            background: var(&#45;&#45;primary-gradient);-->
+<!--            color: white;-->
+<!--            padding: 2.5rem 2rem;-->
+<!--            position: relative;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .page-header::before {-->
+<!--            content: '';-->
+<!--            position: absolute;-->
+<!--            top: -50%;-->
+<!--            right: -10%;-->
+<!--            width: 300px;-->
+<!--            height: 300px;-->
+<!--            background: rgba(255, 255, 255, 0.1);-->
+<!--            border-radius: 50%;-->
+<!--        }-->
+
+<!--        .page-header h2 {-->
+<!--            font-size: 2rem;-->
+<!--            font-weight: 700;-->
+<!--            margin: 0;-->
+<!--            position: relative;-->
+<!--            z-index: 1;-->
+<!--        }-->
+
+<!--        .page-header .btn {-->
+<!--            position: relative;-->
+<!--            z-index: 1;-->
+<!--        }-->
+
+<!--        .filter-card {-->
+<!--            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);-->
+<!--            border: none;-->
+<!--            border-radius: 15px;-->
+<!--            padding: 1.5rem;-->
+<!--            margin: 2rem;-->
+<!--            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);-->
+<!--        }-->
+
+<!--        .filter-card label {-->
+<!--            font-weight: 600;-->
+<!--            color: #333;-->
+<!--            margin-bottom: 0.5rem;-->
+<!--            font-size: 0.9rem;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 0.5px;-->
+<!--        }-->
+
+<!--        .form-select, .form-control {-->
+<!--            border-radius: 10px;-->
+<!--            border: 2px solid #e0e0e0;-->
+<!--            padding: 0.75rem 1rem;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .form-select:focus, .form-control:focus {-->
+<!--            border-color: #667eea;-->
+<!--            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);-->
+<!--        }-->
+
+<!--        .btn-filter {-->
+<!--            background: var(&#45;&#45;primary-gradient);-->
+<!--            border: none;-->
+<!--            border-radius: 10px;-->
+<!--            padding: 0.75rem 2rem;-->
+<!--            font-weight: 600;-->
+<!--            color: white;-->
+<!--            transition: all 0.3s ease;-->
+<!--            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);-->
+<!--        }-->
+
+<!--        .btn-filter:hover {-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);-->
+<!--        }-->
+
+<!--        .btn-add-expense {-->
+<!--            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);-->
+<!--            border: none;-->
+<!--            border-radius: 12px;-->
+<!--            padding: 0.75rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            color: white;-->
+<!--            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .btn-add-expense:hover {-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .expense-table-container {-->
+<!--            margin: 0 2rem 2rem 2rem;-->
+<!--            border-radius: 15px;-->
+<!--            overflow: hidden;-->
+<!--            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);-->
+<!--        }-->
+
+<!--        .table {-->
+<!--            margin: 0;-->
+<!--            border-radius: 15px;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .table thead {-->
+<!--            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .table thead th {-->
+<!--            border: none;-->
+<!--            padding: 1.25rem 1rem;-->
+<!--            font-weight: 600;-->
+<!--            text-transform: uppercase;-->
+<!--            font-size: 0.85rem;-->
+<!--            letter-spacing: 0.5px;-->
+<!--        }-->
+
+<!--        .table tbody tr {-->
+<!--            transition: all 0.3s ease;-->
+<!--            border-bottom: 1px solid #f0f0f0;-->
+<!--        }-->
+
+<!--        .table tbody tr:hover {-->
+<!--            background: linear-gradient(to right, #f8f9ff, #fff);-->
+<!--            transform: scale(1.01);-->
+<!--            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);-->
+<!--        }-->
+
+<!--        .table tbody td {-->
+<!--            padding: 1.25rem 1rem;-->
+<!--            vertical-align: middle;-->
+<!--            border: none;-->
+<!--        }-->
+
+<!--        .amount-badge {-->
+<!--            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);-->
+<!--            color: white;-->
+<!--            padding: 0.5rem 1rem;-->
+<!--            border-radius: 50px;-->
+<!--            font-weight: 700;-->
+<!--            font-size: 1.1rem;-->
+<!--            display: inline-block;-->
+<!--            box-shadow: 0 3px 10px rgba(238, 90, 111, 0.3);-->
+<!--        }-->
+
+<!--        .category-badge {-->
+<!--            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);-->
+<!--            color: white;-->
+<!--            padding: 0.4rem 1rem;-->
+<!--            border-radius: 50px;-->
+<!--            font-weight: 600;-->
+<!--            font-size: 0.85rem;-->
+<!--            display: inline-block;-->
+<!--        }-->
+
+<!--        .date-badge {-->
+<!--            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);-->
+<!--            color: #333;-->
+<!--            padding: 0.4rem 1rem;-->
+<!--            border-radius: 50px;-->
+<!--            font-weight: 600;-->
+<!--            font-size: 0.85rem;-->
+<!--            display: inline-block;-->
+<!--        }-->
+
+<!--        .btn-action {-->
+<!--            border-radius: 8px;-->
+<!--            padding: 0.4rem 1rem;-->
+<!--            font-weight: 600;-->
+<!--            font-size: 0.85rem;-->
+<!--            border: none;-->
+<!--            transition: all 0.3s ease;-->
+<!--            margin: 0 0.2rem;-->
+<!--        }-->
+
+<!--        .btn-edit {-->
+<!--            background: linear-gradient(135deg, #ffd89b 0%, #ffa751 100%);-->
+<!--            color: white;-->
+<!--            box-shadow: 0 3px 10px rgba(255, 167, 81, 0.3);-->
+<!--        }-->
+
+<!--        .btn-edit:hover {-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 5px 15px rgba(255, 167, 81, 0.5);-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .btn-delete {-->
+<!--            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);-->
+<!--            color: white;-->
+<!--            box-shadow: 0 3px 10px rgba(238, 90, 111, 0.3);-->
+<!--        }-->
+
+<!--        .btn-delete:hover {-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 5px 15px rgba(238, 90, 111, 0.5);-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .empty-state {-->
+<!--            text-align: center;-->
+<!--            padding: 4rem 2rem;-->
+<!--        }-->
+
+<!--        .empty-state i {-->
+<!--            font-size: 5rem;-->
+<!--            background: var(&#45;&#45;primary-gradient);-->
+<!--            -webkit-background-clip: text;-->
+<!--            -webkit-text-fill-color: transparent;-->
+<!--            background-clip: text;-->
+<!--        }-->
+
+<!--        .empty-state h4 {-->
+<!--            color: #666;-->
+<!--            margin-top: 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .modal-content {-->
+<!--            border: none;-->
+<!--            border-radius: 20px;-->
+<!--            overflow: hidden;-->
+<!--            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);-->
+<!--        }-->
+
+<!--        .modal-header {-->
+<!--            background: var(&#45;&#45;primary-gradient);-->
+<!--            padding: 1.5rem 2rem;-->
+<!--            border: none;-->
+<!--        }-->
+
+<!--        .modal-header h5 {-->
+<!--            font-weight: 700;-->
+<!--            font-size: 1.5rem;-->
+<!--        }-->
+
+<!--        .modal-body {-->
+<!--            padding: 2rem;-->
+<!--        }-->
+
+<!--        .modal-footer {-->
+<!--            padding: 1.5rem 2rem;-->
+<!--            border: none;-->
+<!--            background: #f8f9fa;-->
+<!--        }-->
+
+<!--        .btn-modal-save {-->
+<!--            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);-->
+<!--            border: none;-->
+<!--            border-radius: 10px;-->
+<!--            padding: 0.75rem 2rem;-->
+<!--            font-weight: 600;-->
+<!--            color: white;-->
+<!--            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);-->
+<!--        }-->
+
+<!--        .btn-modal-save:hover {-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 6px 20px rgba(56, 239, 125, 0.6);-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .btn-modal-cancel {-->
+<!--            background: #6c757d;-->
+<!--            border: none;-->
+<!--            border-radius: 10px;-->
+<!--            padding: 0.75rem 2rem;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .page-header h2 {-->
+<!--                font-size: 1.5rem;-->
+<!--            }-->
+
+<!--            .btn-add-expense {-->
+<!--                width: 100%;-->
+<!--                margin-top: 1rem;-->
+<!--            }-->
+
+<!--            .amount-badge {-->
+<!--                font-size: 0.95rem;-->
+<!--                padding: 0.4rem 0.8rem;-->
+<!--            }-->
+
+<!--            .table {-->
+<!--                font-size: 0.9rem;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--&lt;!&ndash; Navbar &ndash;&gt;-->
+<!--<div th:include="navbar :: navbar"></div>-->
+
+<!--<div class="container">-->
+<!--    <div class="main-container">-->
+
+<!--        &lt;!&ndash; Page Header &ndash;&gt;-->
+<!--        <div class="page-header">-->
+<!--            <div class="d-flex justify-content-between align-items-center flex-wrap">-->
+<!--                <div>-->
+<!--                    <h2><i class="bi bi-credit-card-2-front me-2"></i>Expense Management</h2>-->
+<!--                    <p class="mb-0 mt-2 opacity-75">Track and manage all your expenses</p>-->
+<!--                </div>-->
+<!--                <button th:if="${session.loggedInUser.isManager}"-->
+<!--                        class="btn btn-add-expense"-->
+<!--                        data-bs-toggle="modal"-->
+<!--                        data-bs-target="#expenseModal"-->
+<!--                        onclick="openAddModal()">-->
+<!--                    <i class="bi bi-plus-circle me-2"></i>Add New Expense-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Filters &ndash;&gt;-->
+<!--        <div class="filter-card">-->
+<!--            <form th:action="@{/expenses}" method="get">-->
+<!--                <div class="row g-3 align-items-end">-->
+<!--                    <div class="col-md-4">-->
+<!--                        <label><i class="bi bi-calendar-month me-2"></i>Month</label>-->
+<!--                        <select name="month" class="form-select">-->
+<!--                            <option th:each="m : ${#numbers.sequence(1,12)}"-->
+<!--                                    th:value="${m}"-->
+<!--                                    th:text="${m}"-->
+<!--                                    th:selected="${m == selectedMonth}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-4">-->
+<!--                        <label><i class="bi bi-calendar-event me-2"></i>Year</label>-->
+<!--                        <select name="year" class="form-select">-->
+<!--                            <option th:each="y : ${#numbers.sequence(2020,2030)}"-->
+<!--                                    th:value="${y}"-->
+<!--                                    th:text="${y}"-->
+<!--                                    th:selected="${y == selectedYear}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-4">-->
+<!--                        <button class="btn btn-filter w-100">-->
+<!--                            <i class="bi bi-funnel me-2"></i>Apply Filter-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Expense Table &ndash;&gt;-->
+<!--        <div th:if="${!expenses.isEmpty()}">-->
+<!--            <div class="expense-table-container">-->
+<!--                <div class="table-responsive">-->
+<!--                    <table class="table align-middle mb-0">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th><i class="bi bi-calendar3 me-2"></i>Date</th>-->
+<!--                            <th><i class="bi bi-tag me-2"></i>Category</th>-->
+<!--                            <th><i class="bi bi-card-text me-2"></i>Description</th>-->
+<!--                            <th><i class="bi bi-cash-coin me-2"></i>Amount</th>-->
+<!--                            <th th:if="${session.loggedInUser.isManager}">-->
+<!--                                <i class="bi bi-gear me-2"></i>Actions-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+
+<!--                        <tbody>-->
+<!--                        <tr th:each="expense : ${expenses}">-->
+<!--                            <td>-->
+<!--                                <span class="date-badge">-->
+<!--                                    <i class="bi bi-calendar-check me-1"></i>-->
+<!--                                    <span th:text="${#temporals.format(expense.expenseDate,'dd MMM yyyy')}"></span>-->
+<!--                                </span>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                <span class="category-badge" th:text="${expense.categoryName}"></span>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                <span th:text="${expense.description}" class="text-muted"></span>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                <span class="amount-badge">-->
+<!--                                    ৳ <span th:text="${#numbers.formatDecimal(expense.amount, 1, 2)}"></span>-->
+<!--                                </span>-->
+<!--                            </td>-->
+
+<!--                            <td th:if="${session.loggedInUser.isManager}">-->
+<!--                                <a href="javascript:void(0)"-->
+<!--                                   class="btn btn-action btn-edit"-->
+<!--                                   data-bs-toggle="modal"-->
+<!--                                   data-bs-target="#expenseModal"-->
+<!--                                   th:onclick="'openEditModal(' + ${expense.expenseId} + ')'">-->
+<!--                                    <i class="bi bi-pencil-square me-1"></i>Edit-->
+<!--                                </a>-->
+
+<!--                                <a th:href="@{/expenses/delete/{id}(id=${expense.expenseId})}"-->
+<!--                                   onclick="return confirm('Are you sure you want to delete this expense?')"-->
+<!--                                   class="btn btn-action btn-delete">-->
+<!--                                    <i class="bi bi-trash me-1"></i>Delete-->
+<!--                                </a>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Empty State &ndash;&gt;-->
+<!--        <div class="empty-state" th:if="${expenses.isEmpty()}">-->
+<!--            <i class="bi bi-inbox"></i>-->
+<!--            <h4>No expenses found for this period</h4>-->
+<!--            <p class="text-muted mb-4">Start tracking your expenses by adding your first entry</p>-->
+<!--            <button th:if="${session.loggedInUser.isManager}"-->
+<!--                    class="btn btn-add-expense"-->
+<!--                    data-bs-toggle="modal"-->
+<!--                    data-bs-target="#expenseModal"-->
+<!--                    onclick="openAddModal()">-->
+<!--                <i class="bi bi-plus-circle me-2"></i>Add First Expense-->
+<!--            </button>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Expense Modal &ndash;&gt;-->
+<!--<div class="modal fade" id="expenseModal" tabindex="-1">-->
+<!--    <div class="modal-dialog modal-lg modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="modalTitle">-->
+<!--                    <i class="bi bi-plus-circle me-2"></i>Add Expense-->
+<!--                </h5>-->
+<!--                <button type="button" class="btn-close btn-close-white"-->
+<!--                        data-bs-dismiss="modal"></button>-->
+<!--            </div>-->
+
+<!--            <form id="expenseForm" method="post">-->
+<!--                <div class="modal-body">-->
+
+<!--                    <input type="hidden" name="expenseId" id="expenseId">-->
+
+<!--                    &lt;!&ndash; Date &ndash;&gt;-->
+<!--                    <div class="mb-4">-->
+<!--                        <label class="form-label">-->
+<!--                            <i class="bi bi-calendar-date me-2"></i>Expense Date-->
+<!--                        </label>-->
+<!--                        <input type="date" class="form-control"-->
+<!--                               name="expenseDate" id="expenseDate" required>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Category &ndash;&gt;-->
+<!--                    <div class="mb-4">-->
+<!--                        <label class="form-label">-->
+<!--                            <i class="bi bi-tag-fill me-2"></i>Category-->
+<!--                        </label>-->
+<!--                        <select class="form-select" name="categoryId" id="categoryId" required>-->
+<!--                            <option value="">&#45;&#45; Select Category &#45;&#45;</option>-->
+<!--                            <option th:each="c : ${categories}"-->
+<!--                                    th:value="${c.categoryId}"-->
+<!--                                    th:text="${c.categoryName}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Amount &ndash;&gt;-->
+<!--                    <div class="mb-4">-->
+<!--                        <label class="form-label">-->
+<!--                            <i class="bi bi-currency-exchange me-2"></i>Amount (৳)-->
+<!--                        </label>-->
+<!--                        <input type="number" step="0.01"-->
+<!--                               class="form-control"-->
+<!--                               name="amount" id="amount"-->
+<!--                               placeholder="0.00" required>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Description &ndash;&gt;-->
+<!--                    <div class="mb-4">-->
+<!--                        <label class="form-label">-->
+<!--                            <i class="bi bi-card-text me-2"></i>Description-->
+<!--                        </label>-->
+<!--                        <textarea class="form-control"-->
+<!--                                  name="description" id="description"-->
+<!--                                  rows="3"-->
+<!--                                  placeholder="Enter expense details..."></textarea>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Recorded By &ndash;&gt;-->
+<!--                    <div class="mb-4">-->
+<!--                        <label class="form-label">-->
+<!--                            <i class="bi bi-person-check me-2"></i>Recorded By-->
+<!--                        </label>-->
+<!--                        <select class="form-select"-->
+<!--                                name="recordedBy" id="recordedBy" required>-->
+<!--                            <option value="">&#45;&#45; Select Manager &#45;&#45;</option>-->
+<!--                            <option th:each="m : ${members}"-->
+<!--                                    th:if="${m.isManager}"-->
+<!--                                    th:value="${m.memberId}"-->
+<!--                                    th:text="${m.name}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-modal-cancel"-->
+<!--                            data-bs-dismiss="modal">-->
+<!--                        <i class="bi bi-x-circle me-2"></i>Cancel-->
+<!--                    </button>-->
+<!--                    <button type="submit" class="btn btn-modal-save">-->
+<!--                        <i class="bi bi-check-circle me-2"></i>Save Expense-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </form>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    function openAddModal() {-->
+<!--        document.getElementById("modalTitle").innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add Expense';-->
+<!--        document.getElementById("expenseForm").action = "/expenses/add";-->
+
+<!--        document.getElementById("expenseId").value = "";-->
+<!--        document.getElementById("expenseDate").value = "";-->
+<!--        document.getElementById("categoryId").value = "";-->
+<!--        document.getElementById("amount").value = "";-->
+<!--        document.getElementById("description").value = "";-->
+<!--        document.getElementById("recordedBy").value = "";-->
+<!--    }-->
+
+<!--    function openEditModal(id) {-->
+<!--        document.getElementById("modalTitle").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Expense';-->
+<!--        document.getElementById("expenseForm").action = "/expenses/edit/" + id;-->
+
+<!--        fetch("/expenses/api/" + id)-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                document.getElementById("expenseId").value = data.expenseId;-->
+<!--                document.getElementById("expenseDate").value = data.expenseDate;-->
+<!--                document.getElementById("categoryId").value = data.categoryId;-->
+<!--                document.getElementById("amount").value = data.amount;-->
+<!--                document.getElementById("description").value = data.description ?? "";-->
+<!--                document.getElementById("recordedBy").value = data.recordedBy;-->
+<!--            })-->
+<!--            .catch(err => {-->
+<!--                alert("Failed to load expense data");-->
+<!--                console.error(err);-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Expenses</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Expenses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .main-container { padding: 30px 0; }
+        .page-card {
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .stat-card {
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .amount-cell {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .category-badge {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.65rem;
+            border-radius: 12px;
+        }
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .modal-content {
+            border-radius: 15px;
+        }
+    </style>
 </head>
-
 <body>
+<div th:include="navbar::navbar"></div>
 
-<!-- Navbar -->
-<div th:include="navbar :: navbar"></div>
-
-<div class="container py-4">
-
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">💳 Expense Management</h2>
-        <a th:if="${session.loggedInUser.isLeader}"
-           th:href="@{/expenses/add}"
-           class="btn btn-primary">
-            ➕ Add Expense
-        </a>
+<div class="container main-container">
+    <!-- Success/Error Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
-    <!-- Filters -->
-    <div class="card p-3 mb-3 shadow-sm">
-        <form th:action="@{/expenses}" method="get" class="row g-2">
-            <div class="col-md-3">
-                <label>Month</label>
-                <select name="month" class="form-select">
-                    <option th:each="m : ${#numbers.sequence(1,12)}"
-                            th:value="${m}"
-                            th:text="${m}"
-                            th:selected="${m == selectedMonth}">
-                    </option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label>Year</label>
-                <select name="year" class="form-select">
-                    <option th:each="y : ${#numbers.sequence(2020,2030)}"
-                            th:value="${y}"
-                            th:text="${y}"
-                            th:selected="${y == selectedYear}">
-                    </option>
-                </select>
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button class="btn btn-dark w-100">Filter</button>
-            </div>
-        </form>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
-    <!-- Expense Table -->
-    <div class="card shadow-sm" th:if="${!expenses.isEmpty()}">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-primary">
-                <tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Type</th>
-                    <th>Paid By</th>
-                    <th>Shared</th>
-                    <th th:if="${session.loggedInUser.isLeader}">Actions</th>
-                </tr>
-                </thead>
+    <div class="card page-card">
+        <div class="card-header bg-danger text-white py-3">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h3 class="mb-0">
+                    <i class="bi bi-receipt"></i> Expense Management
+                </h3>
+                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+                    <i class="bi bi-plus-circle"></i> Add Expense
+                </button>
+            </div>
+        </div>
 
-                <tbody>
-                <tr th:each="expense : ${expenses}">
-                    <td th:text="${#temporals.format(expense.expenseDate,'dd MMM yyyy')}"></td>
+        <div class="card-body">
+            <!-- Month/Year Filter -->
+            <form method="get" action="/expenses" class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label for="month" class="form-label fw-bold">Month</label>
+                    <select class="form-select" id="month" name="month">
+                        <option th:each="m : ${#numbers.sequence(1, 12)}"
+                                th:value="${m}"
+                                th:text="${m + ' - ' + #dates.monthName(#dates.create(2000, m, 1))}"
+                                th:selected="${m == selectedMonth}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="year" class="form-label fw-bold">Year</label>
+                    <select class="form-select" id="year" name="year">
+                        <option th:each="y : ${#numbers.sequence(2020, 2030)}"
+                                th:value="${y}"
+                                th:text="${y}"
+                                th:selected="${y == selectedYear}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-danger w-100">
+                        <i class="bi bi-funnel"></i> Filter
+                    </button>
+                </div>
+            </form>
 
-                    <td th:text="${expense.categoryName}"></td>
+            <!-- Summary Statistics -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="card stat-card bg-danger bg-opacity-10 border-danger">
+                        <div class="card-body text-center">
+                            <i class="bi bi-cash-stack fs-1 text-danger d-block mb-2"></i>
+                            <h4 class="text-danger mb-0">
+                                ৳<span th:text="${expenses != null ? #numbers.formatDecimal(#aggregates.sum(expenses.![amount]), 1, 2) : '0.00'}">0.00</span>
+                            </h4>
+                            <small>Total Expenses</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card bg-primary bg-opacity-10 border-primary">
+                        <div class="card-body text-center">
+                            <i class="bi bi-receipt fs-1 text-primary d-block mb-2"></i>
+                            <h4 class="text-primary mb-0" th:text="${expenses != null ? expenses.size() : 0}">0</h4>
+                            <small>Total Transactions</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card bg-info bg-opacity-10 border-info">
+                        <div class="card-body text-center">
+                            <i class="bi bi-tags fs-1 text-info d-block mb-2"></i>
+                            <h4 class="text-info mb-0" th:text="${expenses != null ? #sets.size(#sets.toSet(expenses.![categoryId])) : 0}">0</h4>
+                            <small>Categories Used</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    <td th:text="${expense.description}"></td>
+            <!-- Expenses Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th style="width: 10%;">#</th>
+                        <th style="width: 15%;">Date</th>
+                        <th style="width: 20%;">Category</th>
+                        <th style="width: 25%;">Description</th>
+                        <th style="width: 15%;" class="text-end">Amount</th>
+                        <th style="width: 10%;">Recorded By</th>
+                        <th style="width: 5%;" class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${expenses == null || expenses.isEmpty()}">
+                        <td colspan="7" class="text-center text-muted py-5">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            No expenses found for this month
+                        </td>
+                    </tr>
 
-                    <td class="fw-bold text-danger">
-                        ৳ <span th:text="${expense.amount}"></span>
-                    </td>
-
-                    <td th:text="${expense.expenseType}"></td>
-
-                    <td th:text="${expense.paidByMemberName}"></td>
-
-                    <td th:text="${expense.isShared ? 'Yes' : 'No'}"></td>
-
-                    <td th:if="${session.loggedInUser.isLeader}">
-                        <a th:href="@{/expenses/edit/{id}(id=${expense.expenseId})}"
-                           class="btn btn-sm btn-warning">Edit</a>
-                        <a th:href="@{/expenses/delete/{id}(id=${expense.expenseId})}"
-                           onclick="return confirm('Delete this expense?')"
-                           class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                    <tr th:each="expense, iterStat : ${expenses}">
+                        <td th:text="${iterStat.count}">1</td>
+                        <td>
+                            <i class="bi bi-calendar3 text-muted me-2"></i>
+                            <span th:text="${#temporals.format(expense.expenseDate, 'dd MMM yyyy')}"></span>
+                        </td>
+                        <td>
+                            <span class="badge category-badge bg-primary">
+                                <i class="bi bi-tag"></i>
+                                <span th:text="${expense.categoryName}">Category</span>
+                            </span>
+                        </td>
+                        <td>
+                            <span th:text="${expense.description}">Description</span>
+                        </td>
+                        <td class="text-end">
+                            <span class="amount-cell text-danger">
+                                ৳<span th:text="${#numbers.formatDecimal(expense.amount, 1, 2)}">0.00</span>
+                            </span>
+                        </td>
+                        <td>
+                            <i class="bi bi-person-check text-muted me-1"></i>
+                            <small th:text="${expense.recordedByName}">Recorder</small>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                <button type="button"
+                                        class="btn btn-outline-warning"
+                                        th:onclick="'loadExpenseForEdit(' + ${expense.expenseId} + ')'"
+                                        title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <a th:href="@{/expenses/delete/{id}(id=${expense.expenseId})}"
+                                   class="btn btn-outline-danger"
+                                   onclick="return confirm('Are you sure you want to delete this expense?')"
+                                   title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot th:if="${expenses != null && !expenses.isEmpty()}" class="table-light">
+                    <tr>
+                        <td colspan="4" class="text-end fw-bold">
+                            <i class="bi bi-calculator"></i> TOTAL:
+                        </td>
+                        <td class="text-end">
+                            <span class="amount-cell text-danger">
+                                ৳<span th:text="${#numbers.formatDecimal(#aggregates.sum(expenses.![amount]), 1, 2)}">0.00</span>
+                            </span>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
-
-    <!-- Empty State -->
-    <div class="text-center py-5" th:if="${expenses.isEmpty()}">
-        <h4 class="text-muted">No expenses found.</h4>
-        <a th:if="${session.loggedInUser.isLeader}"
-           th:href="@{/expenses/add}"
-           class="btn btn-primary mt-3">
-            ➕ Add First Expense
-        </a>
-    </div>
-
 </div>
 
+<!-- Add Expense Modal -->
+<div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="addExpenseModalLabel">
+                    <i class="bi bi-plus-circle"></i> Add New Expense
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/expenses/add" method="post" id="addExpenseForm">
+                <div class="modal-body">
+                    <!-- Expense Date -->
+                    <div class="mb-3">
+                        <label for="expenseDate" class="form-label fw-bold">
+                            <i class="bi bi-calendar3 text-danger"></i> Expense Date
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="date" class="form-control" id="expenseDate" name="expenseDate" required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label for="categoryId" class="form-label fw-bold">
+                            <i class="bi bi-tag text-danger"></i> Category
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="categoryId" name="categoryId" required>
+                            <option value="">-- Select Category --</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.categoryId}"
+                                    th:text="${category.categoryName}">Category</option>
+                        </select>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="mb-3">
+                        <label for="amount" class="form-label fw-bold">
+                            <i class="bi bi-currency-dollar text-danger"></i> Amount
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">৳</span>
+                            <input type="number"
+                                   class="form-control"
+                                   id="amount"
+                                   name="amount"
+                                   step="0.01"
+                                   min="0.01"
+                                   required
+                                   placeholder="Enter amount">
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-bold">
+                            <i class="bi bi-chat-left-text text-danger"></i> Description
+                        </label>
+                        <textarea class="form-control"
+                                  id="description"
+                                  name="description"
+                                  rows="3"
+                                  placeholder="Enter expense details..."></textarea>
+                    </div>
+
+                    <!-- Recorded By -->
+                    <div class="mb-3">
+                        <label for="recordedBy" class="form-label fw-bold">
+                            <i class="bi bi-person-check text-danger"></i> Recorded By
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="recordedBy" name="recordedBy" required>
+                            <option value="">-- Select Recorder --</option>
+                            <option th:each="member : ${members}"
+                                    th:if="${member.isManager}"
+                                    th:value="${member.memberId}"
+                                    th:text="${member.name}">Member</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-check-circle"></i> Save Expense
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Expense Modal -->
+<div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="editExpenseModalLabel">
+                    <i class="bi bi-pencil"></i> Edit Expense
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editExpenseForm" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="editExpenseId" name="expenseId">
+
+                    <!-- Expense Date -->
+                    <div class="mb-3">
+                        <label for="editExpenseDate" class="form-label fw-bold">
+                            <i class="bi bi-calendar3 text-warning"></i> Expense Date
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="date" class="form-control" id="editExpenseDate" name="expenseDate" required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label for="editCategoryId" class="form-label fw-bold">
+                            <i class="bi bi-tag text-warning"></i> Category
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="editCategoryId" name="categoryId" required>
+                            <option value="">-- Select Category --</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.categoryId}"
+                                    th:text="${category.categoryName}">Category</option>
+                        </select>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="mb-3">
+                        <label for="editAmount" class="form-label fw-bold">
+                            <i class="bi bi-currency-dollar text-warning"></i> Amount
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">৳</span>
+                            <input type="number"
+                                   class="form-control"
+                                   id="editAmount"
+                                   name="amount"
+                                   step="0.01"
+                                   min="0.01"
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label fw-bold">
+                            <i class="bi bi-chat-left-text text-warning"></i> Description
+                        </label>
+                        <textarea class="form-control"
+                                  id="editDescription"
+                                  name="description"
+                                  rows="3"></textarea>
+                    </div>
+
+                    <!-- Recorded By -->
+                    <div class="mb-3">
+                        <label for="editRecordedBy" class="form-label fw-bold">
+                            <i class="bi bi-person-check text-warning"></i> Recorded By
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="editRecordedBy" name="recordedBy" required>
+                            <option value="">-- Select Recorder --</option>
+                            <option th:each="member : ${members}"
+                                    th:if="${member.isManager}"
+                                    th:value="${member.memberId}"
+                                    th:text="${member.name}">Member</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-check-circle"></i> Update Expense
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Set today's date as default
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('expenseDate').value = today;
+
+        // Reset add form when modal opens
+        document.getElementById('addExpenseModal').addEventListener('show.bs.modal', function() {
+            document.getElementById('addExpenseForm').reset();
+            document.getElementById('expenseDate').value = today;
+        });
+    });
+
+    // Load expense data for editing
+    function loadExpenseForEdit(expenseId) {
+        fetch(`/expenses/api/${expenseId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Set form action
+                document.getElementById('editExpenseForm').action = `/expenses/edit/${expenseId}`;
+
+                // Fill form fields
+                document.getElementById('editExpenseId').value = data.expenseId;
+                document.getElementById('editExpenseDate').value = data.expenseDate;
+                document.getElementById('editCategoryId').value = data.categoryId;
+                document.getElementById('editAmount').value = data.amount;
+                document.getElementById('editDescription').value = data.description || '';
+                document.getElementById('editRecordedBy').value = data.recordedBy;
+
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
+                modal.show();
+            })
+            .catch(error => {
+                console.error('Error loading expense:', error);
+                alert('Error loading expense data. Please try again.');
+            });
+    }
+</script>
 </body>
 </html>

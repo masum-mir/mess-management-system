@@ -5,6 +5,7 @@ import com.mms.model.ExpenseShare;
 import com.mms.model.Member;
 import com.mms.repository.ExpenseRepository;
 import com.mms.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,10 @@ import java.util.List;
 @Service
 public class ExpenseService {
 
-    private final ExpenseRepository expenseRepository;
-    private final MemberRepository memberRepository;
-
-    public ExpenseService(ExpenseRepository expenseRepository, MemberRepository memberRepository) {
-        this.expenseRepository = expenseRepository;
-        this.memberRepository = memberRepository;
-    }
+    @Autowired
+    ExpenseRepository expenseRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
@@ -41,11 +39,6 @@ public class ExpenseService {
         Integer expenseId = expenseRepository.save(expense);
         expense.setExpenseId(expenseId);
 
-        // If shared expense, distribute among active members
-        if (expense.getIsShared() && !expense.getExpenseType().equals("meal")) {
-            distributeExpenseShare(expenseId, expense.getAmount());
-        }
-
         return expense;
     }
 
@@ -57,10 +50,6 @@ public class ExpenseService {
         // Update expense
         expenseRepository.update(expense);
 
-        // Redistribute shares if shared
-        if (expense.getIsShared() && !expense.getExpenseType().equals("meal")) {
-            distributeExpenseShare(expense.getExpenseId(), expense.getAmount());
-        }
     }
 
     @Transactional
@@ -68,31 +57,18 @@ public class ExpenseService {
         expenseRepository.delete(id);
     }
 
-    /**
-     * Distribute expense equally among all active members
-     */
-    private void distributeExpenseShare(Integer expenseId, BigDecimal amount) {
-        List<Member> activeMembers = memberRepository.findActiveMembers();
-
-        if (activeMembers.isEmpty()) {
-            return;
-        }
-
-        int memberCount = activeMembers.size();
-        BigDecimal sharePerMember = amount.divide(
-                BigDecimal.valueOf(memberCount), 2, RoundingMode.HALF_UP
-        );
-
-        for (Member member : activeMembers) {
-            ExpenseShare share = new ExpenseShare();
-            share.setExpenseId(expenseId);
-            share.setMemberId(member.getMemberId());
-            share.setShareAmount(sharePerMember);
-            expenseRepository.saveExpenseShare(share);
-        }
-    }
-
     public List<ExpenseShare> getExpenseShares(Integer expenseId) {
         return expenseRepository.findSharesByExpenseId(expenseId);
     }
+
+    public String shareExpansebyMealindovidual(){
+//         return expenseRepository.shareExpansebyMealindovidual();
+        return null;
+    }
+
+    public String shareExpansebyOtherCost(){
+//        return expenseRepository.shareExpansebyMealindovidual();
+        return null;
+    }
+
 }

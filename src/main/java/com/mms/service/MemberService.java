@@ -25,26 +25,14 @@ public class MemberService {
         return memberRepository.findActiveMembers();
     }
 
-    public List<Member> getLeaders() {
-        return memberRepository.findLeaders();
+    public List<Member> getManagers() {
+        return memberRepository.findManagers();
     }
 
     public Optional<Member> getMemberById(Integer id) {
         return memberRepository.findById(id);
     }
 
-//    @Transactional
-//    public Member saveMember(Member member) {
-//        // Simple password encoding (in production, use BCrypt)
-////        int manager_id = memberRepository.findLeaders();
-//        if (member.getPassword() != null && !member.getPassword().startsWith("$2a$")) {
-//            member.setPassword("$2a$10$" + member.getPassword());
-//        }
-//
-//        Integer id = memberRepository.save(member);
-//        member.setMemberId(id);
-//        return member;
-//    }
 @Transactional
 public Member saveMember(Member member) {
 
@@ -52,7 +40,7 @@ public Member saveMember(Member member) {
         throw new RuntimeException("Password cannot be null!");
     }
 
-    List<Member> manager_id = memberRepository.findLeaders();
+    List<Member> manager_id = memberRepository.findManagers();
 
     member.setManagerId(manager_id.getFirst().getMemberId());
 

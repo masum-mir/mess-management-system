@@ -17,8 +17,8 @@ public class Member {
     private String address;
     private String password;
     private LocalDate joinDate;
-    private String status; // active, inactive
-    private Boolean isLeader;
+    private String status;
+    private Boolean isManager;
     private Integer managerId;
     private LocalDateTime createdAt;
 
@@ -29,6 +29,6 @@ public class Member {
     public Member() {
         this.joinDate = LocalDate.now();
         this.status = "active";
-        this.isLeader = false;
+        this.isManager = false;
     }
 }

@@ -110,10 +110,14 @@
                     <h3>📋 Basic Information</h3>
 
                     <div class="form-row">
-<!--                        <div class="form-group">-->
-<!--                            <label>📅 Expense Date <span class="required">*</span></label>-->
-<!--                            <input type="date" th:field="*{expenseDate}" required>-->
-<!--                        </div>-->
+                        <div class="form-group">
+                            <label>📅 Expense Date <span class="required">*</span></label>
+
+                            <input type="date"
+                                   name="expenseDate"
+                                   th:value="${expense.expenseDate != null} ? ${#temporals.format(expense.expenseDate, 'yyyy-MM-dd')} : ''"
+                                   required>
+                        </div>
 
                         <div class="form-group">
                             <label>📁 Category <span class="required">*</span></label>
@@ -132,14 +136,6 @@
                             <label>💰 Amount <span class="required">*</span></label>
                             <input type="number" th:field="*{amount}" step="0.01" required>
                         </div>
-
-                        <div class="form-group">
-                            <label>🏷️ Expense Type</label>
-                            <select th:field="*{expenseType}" required>
-                                <option value="central">Central</option>
-                                <option value="individual">Individual</option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="form-group">
@@ -154,39 +150,16 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>💳 Paid By</label>
-                            <select th:field="*{paidByMemberId}" required>
-                                <option value="">-- Select Member --</option>
-                                <option th:each="m : ${members}"
-                                        th:value="${m.memberId}"
-                                        th:text="${m.name}">
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
                             <label>📊 Recorded By</label>
                             <select th:field="*{recordedBy}" required>
                                 <option th:each="m : ${members}"
-                                        th:if="${m.isLeader}"
+                                        th:if="${m.isManager}"
                                         th:value="${m.memberId}"
                                         th:text="${m.name}">
                                 </option>
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <!-- Sharing -->
-                <div class="form-section">
-                    <h3>🤝 Sharing Options</h3>
-
-                    <label class="checkbox-group">
-                        <input type="checkbox" id="isShared" th:field="*{isShared}">
-                        <label for="isShared">
-                            Share this expense equally among all active members
-                        </label>
-                    </label>
                 </div>
 
                 <!-- Form Buttons -->

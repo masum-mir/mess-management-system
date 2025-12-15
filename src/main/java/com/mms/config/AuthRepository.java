@@ -23,7 +23,7 @@ public class AuthRepository {
         member.setEmail(rs.getString("email"));
         member.setPhone(rs.getString("phone"));
         member.setPassword(rs.getString("password"));
-        member.setIsLeader(rs.getBoolean("is_leader"));
+        member.setIsManager(rs.getBoolean("is_manager"));
         member.setStatus(rs.getString("status"));
         return member;
     };

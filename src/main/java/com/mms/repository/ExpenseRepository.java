@@ -2,6 +2,7 @@ package com.mms.repository;
 
 import com.mms.model.Expense;
 import com.mms.model.ExpenseShare;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,28 +17,8 @@ import java.util.List;
 @Repository
 public class ExpenseRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public ExpenseRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private final RowMapper<Expense> expenseRowMapper = (rs, rowNum) -> {
-        Expense expense = new Expense();
-        expense.setExpenseId(rs.getInt("expense_id"));
-        expense.setExpenseDate(rs.getDate("expense_date").toLocalDate());
-        expense.setAmount(rs.getBigDecimal("amount"));
-        expense.setDescription(rs.getString("description"));
-        expense.setExpenseType(rs.getString("expense_type"));
-        expense.setCategoryId(rs.getInt("category_id"));
-        expense.setPaidByMemberId(rs.getInt("paid_by_member_id"));
-        expense.setRecordedBy(rs.getInt("recorded_by"));
-        expense.setIsShared(rs.getBoolean("is_shared"));
-        expense.setMonth(rs.getInt("month"));
-        expense.setYear(rs.getInt("year"));
-        expense.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-        return expense;
-    };
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     private final RowMapper<Expense> expenseDetailRowMapper = (rs, rowNum) -> {
         Expense expense = new Expense();
@@ -45,15 +26,10 @@ public class ExpenseRepository {
         expense.setExpenseDate(rs.getDate("expense_date").toLocalDate());
         expense.setAmount(rs.getBigDecimal("amount"));
         expense.setDescription(rs.getString("description"));
-        expense.setExpenseType(rs.getString("expense_type"));
         expense.setCategoryId(rs.getInt("category_id"));
         expense.setCategoryName(rs.getString("category_name"));
-        expense.setCategoryId(rs.getInt("category_id"));
-//        expense.setPaidByMemberId(rs.getInt("paid_by_member_id"));
-        expense.setPaidByMemberName(rs.getString("paid_by_name"));
         expense.setRecordedBy(rs.getInt("recorded_by"));
         expense.setRecordedByName(rs.getString("recorded_by_name"));
-        expense.setIsShared(rs.getBoolean("is_shared"));
         expense.setMonth(rs.getInt("month"));
         expense.setYear(rs.getInt("year"));
         expense.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
@@ -61,22 +37,19 @@ public class ExpenseRepository {
     };
 
     public List<Expense> findAll() {
-        String sql = "SELECT e.*, c.category_name, " +
-                "m1.name as paid_by_name, m2.name as recorded_by_name " +
+        String sql = "SELECT e.*, c.category_name, m2.name as recorded_by_name " +
                 "FROM expense e " +
                 "JOIN category c ON e.category_id = c.category_id " +
-                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
                 "JOIN member m2 ON e.recorded_by = m2.member_id " +
                 "ORDER BY e.expense_date DESC, e.expense_id DESC";
         return jdbcTemplate.query(sql, expenseDetailRowMapper);
     }
 
     public List<Expense> findByMonth(int month, int year) {
-        String sql = "SELECT e.*, c.category_name, " +
-                "m1.name as paid_by_name, m2.name as recorded_by_name " +
+        String sql = "SELECT e.*, c.category_name, m2.name as recorded_by_name " +
                 "FROM expense e " +
                 "JOIN category c ON e.category_id = c.category_id " +
-                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
+//                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
                 "JOIN member m2 ON e.recorded_by = m2.member_id " +
                 "WHERE e.month = ? AND e.year = ? " +
                 "ORDER BY e.expense_date DESC";
@@ -84,11 +57,10 @@ public class ExpenseRepository {
     }
 
     public Expense findById(Integer id) {
-        String sql = "SELECT e.*, c.category_name, " +
-                "m1.name as paid_by_name, m2.name as recorded_by_name " +
+        String sql = "SELECT e.*, c.category_name, m2.name as recorded_by_name " +
                 "FROM expense e " +
                 "JOIN category c ON e.category_id = c.category_id " +
-                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
+//                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
                 "JOIN member m2 ON e.recorded_by = m2.member_id " +
                 "WHERE e.expense_id = ?";
         List<Expense> expenses = jdbcTemplate.query(sql, expenseDetailRowMapper, id);
@@ -97,9 +69,8 @@ public class ExpenseRepository {
 
     @Transactional
     public Integer save(Expense expense) {
-        String sql = "INSERT INTO expense (expense_date, amount, description, expense_type, " +
-                "category_id, paid_by_member_id, recorded_by, is_shared, month, year) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO expense (expense_date, amount, description, category_id, recorded_by, month, year) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -108,13 +79,10 @@ public class ExpenseRepository {
             ps.setDate(1, java.sql.Date.valueOf(expense.getExpenseDate()));
             ps.setBigDecimal(2, expense.getAmount());
             ps.setString(3, expense.getDescription());
-            ps.setString(4, expense.getExpenseType());
-            ps.setInt(5, expense.getCategoryId());
-            ps.setInt(6, expense.getPaidByMemberId());
-            ps.setInt(7, expense.getRecordedBy());
-            ps.setBoolean(8, expense.getIsShared());
-            ps.setInt(9, expense.getMonth());
-            ps.setInt(10, expense.getYear());
+            ps.setInt(4, expense.getCategoryId());
+            ps.setInt(5, expense.getRecordedBy());
+            ps.setInt(6, expense.getMonth());
+            ps.setInt(7, expense.getYear());
             return ps;
         }, keyHolder);
 
@@ -123,17 +91,13 @@ public class ExpenseRepository {
 
     public void update(Expense expense) {
         String sql = "UPDATE expense SET expense_date = ?, amount = ?, description = ?, " +
-                "expense_type = ?, category_id = ?, paid_by_member_id = ?, " +
-                "is_shared = ?, month = ?, year = ? WHERE expense_id = ?";
+                "category_id = ?, month = ?, year = ? WHERE expense_id = ?";
 
         jdbcTemplate.update(sql,
                 java.sql.Date.valueOf(expense.getExpenseDate()),
                 expense.getAmount(),
                 expense.getDescription(),
-                expense.getExpenseType(),
                 expense.getCategoryId(),
-                expense.getPaidByMemberId(),
-                expense.getIsShared(),
                 expense.getMonth(),
                 expense.getYear(),
                 expense.getExpenseId()
@@ -145,6 +109,11 @@ public class ExpenseRepository {
         jdbcTemplate.update(sql, id);
     }
 
+//    public Double findIndividualExpend(Integer expense_id) {
+//        String sql = ""
+//    }
+
+//    --------------------------------------------------- delte
     // Expense Share methods
     private final RowMapper<ExpenseShare> expenseShareRowMapper = (rs, rowNum) -> {
         ExpenseShare share = new ExpenseShare();
@@ -171,4 +140,28 @@ public class ExpenseRepository {
         String sql = "DELETE FROM expense_share WHERE expense_id = ?";
         jdbcTemplate.update(sql, expenseId);
     }
+
+//    public String shareExpansebyMealindovidual(){
+//        String sql="SELECT\n" +
+//                "    mem.member_id,\n" +
+//                "    t.per_meal_cost\n" +
+//                "FROM member mem\n" +
+//                "CROSS JOIN (\n" +
+//                "    SELECT \n" +
+//                "        SUM(e.amount) / SUM(m.total_attendees) AS per_meal_cost\n" +
+//                "    FROM expense e\n" +
+//                "    JOIN meal m ON e.month = m.month\n" +
+//                "    WHERE e.month = ?\n" +
+//                ") t;\n";
+//        return jdbcTemplate.query(sql);
+//    }
+//
+//    public String shareExpansebyOtherCost(){
+//        String sql="SELECT\n" +
+//                "    SUM(e.amount) / COUNT(m.member_id) AS avg_cost_per_member\n" +
+//                "FROM expense e\n" +
+//                "CROSS JOIN member m\n" +
+//                "WHERE e.month = '12';";
+//        return jdbcTemplate.query(sql);
+//    }
 }

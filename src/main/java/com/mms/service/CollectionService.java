@@ -1,6 +1,7 @@
 package com.mms.service;
 
 import com.mms.model.Collection;
+import com.mms.model.dto.MemberCollectionDto;
 import com.mms.repository.CollectionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,12 @@ public class CollectionService {
     public List<Collection> getCollectionsByMonth(int month, int year) {
         return collectionRepository.findByMonth(month, year);
     }
-
+    public List<MemberCollectionDto> getMemberSummaryByMonth(int month, int year) {
+        return collectionRepository.findMemberSummaryByMonth(month, year);
+    }
+    public List<Collection> getMemberTransactions(Integer memberId, int month, int year) {
+        return collectionRepository.findByMemberAndMonth(memberId, month, year);
+    }
     public List<Collection> getMemberCollections(Integer memberId, int month, int year) {
         return collectionRepository.findByMember(memberId, month, year);
     }

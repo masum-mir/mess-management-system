@@ -21,7 +21,7 @@ public class SessionHelper {
 
     public static boolean isLeader(HttpSession session) {
         Member member = getLoggedInMember(session);
-        return member != null && member.getIsLeader();
+        return member != null && member.getIsManager();
     }
 
     public static void logout(HttpSession session) {

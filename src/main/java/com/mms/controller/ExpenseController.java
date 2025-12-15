@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/expenses")
@@ -37,8 +40,14 @@ public class ExpenseController {
         int selectedYear = (year != null) ? year : now.getYear();
 
         List<Expense> expenses = expenseService.getExpensesByMonth(selectedMonth, selectedYear);
+// Add a dummy expense object for the modal form (to avoid null errors)
+        Expense newExpense = new Expense();
+        newExpense.setExpenseDate(LocalDate.now());
 
+        model.addAttribute("expense", newExpense);  // 👈 This is the fix!
         model.addAttribute("expenses", expenses);
+        model.addAttribute("members", memberService.getActiveMembers());
+        model.addAttribute("categories", categoryService.getNonMealCategories());
         model.addAttribute("selectedMonth", selectedMonth);
         model.addAttribute("selectedYear", selectedYear);
         model.addAttribute("pageTitle", "Expenses");
@@ -59,12 +68,40 @@ public class ExpenseController {
         return "expense/add";
     }
 
+    @GetMapping("/api/{id}")
+    @ResponseBody
+    public Map<String, Object> getExpenseData(@PathVariable Integer id) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Expense expense = expenseService.getExpenseById(id);
+
+            if (expense == null) {
+                response.put("error", "Expense not found");
+                return response;
+            }
+
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            response.put("expenseId", expense.getExpenseId());
+            response.put("expenseDate", expense.getExpenseDate().format(dateFormatter));
+            response.put("categoryId", expense.getCategoryId());
+            response.put("amount", expense.getAmount());
+            response.put("description", expense.getDescription());
+            response.put("recordedBy", expense.getRecordedBy());
+
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+        }
+
+        return response;
+    }
 
     @PostMapping("/add")
     public String addExpense(@ModelAttribute Expense expense,
                              RedirectAttributes redirectAttributes) {
         try {
-            // Set month and year from expense date
+
             expense.setMonth(expense.getExpenseDate().getMonthValue());
             expense.setYear(expense.getExpenseDate().getYear());
 
@@ -127,4 +164,15 @@ public class ExpenseController {
         }
         return "redirect:/expenses";
     }
+
+    @GetMapping("/per-person-mill-cost")
+    public String shareExpansebyMealindovidual(){
+        return expenseService.shareExpansebyMealindovidual();
+    }
+
+    @GetMapping("/per-member-other-cost")
+    public String shareExpansebyOtherCost(){
+        return expenseService.shareExpansebyOtherCost();
+    }
+
 }

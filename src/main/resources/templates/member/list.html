@@ -56,8 +56,8 @@
                         </td>
 
                         <td>
-                            <span th:text="${member.isLeader} ? 'Yes' : 'No'"
-                                  th:classappend="${member.isLeader} ? 'text-success fw-bold' : 'text-muted'">
+                            <span th:text="${member.isManager} ? 'Yes' : 'No'"
+                                  th:classappend="${member.isManager} ? 'text-success fw-bold' : 'text-muted'">
                             </span>
                         </td>
 
@@ -73,7 +73,7 @@
                                              data-email=${member.email},
                                              data-address=${member.address},
                                              data-status=${member.status},
-                                             data-leader=${member.isLeader}">
+                                             data-leader=${member.isManager}">
                                 Edit
                             </button>
 
@@ -145,7 +145,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Is Leader?</label>
-                        <select id="modal-leader" name="isLeader" class="form-select">
+                        <select id="modal-leader" name="isManager" class="form-select">
                             <option value="false">No</option>
                             <option value="true">Yes</option>
                         </select>
@@ -217,7 +217,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Is Leader?</label>
-                        <select name="isLeader" class="form-select">
+                        <select name="isManager" class="form-select">
                             <option value="false">No</option>
                             <option value="true">Yes</option>
                         </select>

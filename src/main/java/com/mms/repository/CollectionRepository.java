@@ -1,6 +1,7 @@
 package com.mms.repository;
 
 import com.mms.model.Collection;
+import com.mms.model.dto.MemberCollectionDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -52,6 +53,16 @@ public class CollectionRepository {
         return collection;
     };
 
+    private final RowMapper<MemberCollectionDto> summaryRowMapper = (rs, rowNum) -> {
+        MemberCollectionDto summary = new MemberCollectionDto();
+        summary.setMemberId(rs.getInt("member_id"));
+        summary.setMemberName(rs.getString("member_name"));
+        summary.setTotalAmount(rs.getBigDecimal("total_amount"));
+        summary.setTransactionCount(rs.getInt("transaction_count"));
+        return summary;
+    };
+
+
     public List<Collection> findAll() {
         String sql = "SELECT c.*, m1.name as member_name, m2.name as collected_by_name " +
                 "FROM collection c " +
@@ -60,6 +71,31 @@ public class CollectionRepository {
                 "ORDER BY c.collect_date DESC, c.collection_id DESC";
         return jdbcTemplate.query(sql, collectionDetailRowMapper);
     }
+
+    public List<MemberCollectionDto> findMemberSummaryByMonth(int month, int year) {
+        String sql = "SELECT " +
+                "c.member_id, " +
+                "m1.name as member_name, " +
+                "SUM(c.amount) AS total_amount, " +
+                "COUNT(*) AS transaction_count " +
+                "FROM collection c " +
+                "JOIN member m1 ON c.member_id = m1.member_id " +
+                "WHERE c.month = ? AND c.year = ? " +
+                "GROUP BY c.member_id, m1.name " +
+                "ORDER BY m1.name";
+        return jdbcTemplate.query(sql, summaryRowMapper, month, year);
+    }
+
+    public List<Collection> findByMemberAndMonth(Integer memberId, int month, int year) {
+        String sql = "SELECT c.*, m1.name as member_name, m2.name as collected_by_name " +
+                "FROM collection c " +
+                "JOIN member m1 ON c.member_id = m1.member_id " +
+                "JOIN member m2 ON c.collected_by = m2.member_id " +
+                "WHERE c.member_id = ? AND c.month = ? AND c.year = ? " +
+                "ORDER BY c.collect_date DESC";
+        return jdbcTemplate.query(sql, collectionDetailRowMapper, memberId, month, year);
+    }
+
 
     public List<Collection> findByMonth(int month, int year) {
         String sql = "SELECT c.*, m1.name as member_name, m2.name as collected_by_name " +

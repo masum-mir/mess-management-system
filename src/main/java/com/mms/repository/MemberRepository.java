@@ -31,7 +31,7 @@ public class MemberRepository {
         member.setPassword(rs.getString("password"));
         member.setJoinDate(rs.getDate("join_date").toLocalDate());
         member.setStatus(rs.getString("status"));
-        member.setIsLeader(rs.getBoolean("is_leader"));
+        member.setIsManager(rs.getBoolean("is_manager"));
         member.setManagerId((Integer) rs.getObject("manager_id"));
         member.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         return member;
@@ -67,7 +67,7 @@ public class MemberRepository {
 
 //    public Integer save(Member member) {
 //        String sql = "INSERT INTO member (name, phone, email, address, password, " +
-//                "join_date, status, is_leader, manager_id) " +
+//                "join_date, status, is_manager, manager_id) " +
 //                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 //
 //        KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -88,9 +88,10 @@ public class MemberRepository {
 //
 //        return keyHolder.getKey().intValue();
 //    }
+    
 public Integer save(Member member) {
     String sql = "INSERT INTO member (name, phone, email, address, password, " +
-            "join_date, status, is_leader, manager_id) " +
+            "join_date, status, is_manager, manager_id) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -99,23 +100,23 @@ public Integer save(Member member) {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, member.getName());
-            ps.setString(3, member.getPhone());
-            ps.setString(4, member.getEmail());
-            ps.setString(5, member.getAddress());
-            ps.setString(6, member.getPassword());
+            ps.setString(2, member.getPhone());
+            ps.setString(3, member.getEmail());
+            ps.setString(4, member.getAddress());
+            ps.setString(5, member.getPassword());
 
             if (member.getJoinDate() != null)
-                ps.setDate(7, Date.valueOf(member.getJoinDate()));
+                ps.setDate(6, Date.valueOf(member.getJoinDate()));
             else
-                ps.setNull(7, Types.DATE);
+                ps.setNull(6, Types.DATE);
 
-            ps.setString(8, member.getStatus());
-            ps.setBoolean(9, member.getIsLeader());
+            ps.setString(7, member.getStatus());
+            ps.setBoolean(8, member.getIsManager());
 
             if (member.getManagerId() != null)
-                ps.setInt(10, member.getManagerId());
+                ps.setInt(9, member.getManagerId());
             else
-                ps.setNull(10, Types.INTEGER);
+                ps.setNull(9, Types.INTEGER);
 
             return ps;
         }, keyHolder);
@@ -130,7 +131,7 @@ public Integer save(Member member) {
 
     public void update(Member member) {
         String sql = "UPDATE member SET name = ?, phone = ?, email = ?, " +
-                "address = ?, status = ?, is_leader = ?, manager_id = ? " +
+                "address = ?, status = ?, is_manager = ?, manager_id = ? " +
                 "WHERE member_id = ?";
 
         jdbcTemplate.update(sql,
@@ -139,7 +140,7 @@ public Integer save(Member member) {
                 member.getEmail(),
                 member.getAddress(),
                 member.getStatus(),
-                member.getIsLeader(),
+                member.getIsManager(),
                 member.getManagerId(),
                 member.getMemberId()
         );
@@ -160,8 +161,8 @@ public Integer save(Member member) {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    public List<Member> findLeaders() {
-        String sql = "SELECT * FROM member WHERE is_leader = TRUE AND status = 'active'";
+    public List<Member> findManagers() {
+        String sql = "SELECT * FROM member WHERE is_manager = TRUE AND status = 'active'";
         return jdbcTemplate.query(sql, memberRowMapper);
     }
 }

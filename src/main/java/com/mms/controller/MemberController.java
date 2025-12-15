@@ -60,7 +60,7 @@ public class MemberController {
         }
         model.addAttribute("member", member);
         model.addAttribute("pageTitle", "Edit Member");
-        model.addAttribute("leaders", memberService.getLeaders());
+        model.addAttribute("manager", memberService.getManagers());
         return "member/edit";
     }
 
