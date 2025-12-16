@@ -1,24 +1,33 @@
-//package com.mms.service;
-//
-//import com.mms.model.dto.MemberReportDTO;
-//import com.mms.model.dto.MonthlySummaryDTO;
-//import com.mms.repository.ReportRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//@Service
-//public class ReportService {
-//
-//    @Autowired
-//    private ReportRepository reportRepository;
-//
-//    public List<MemberReportDTO> getMemberReport(int month, int year) {
-//        return reportRepository.getMemberReport(month, year);
-//    }
-//
+package com.mms.service;
+
+import com.mms.model.MonthlyBalanceReport;
+import com.mms.model.ReportSummary;
+import com.mms.model.dto.MemberReportDTO;
+import com.mms.model.dto.MonthlySummaryDTO;
+import com.mms.repository.MonthlyBalanceReportRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ReportService {
+
+    @Autowired
+    private MonthlyBalanceReportRepository reportRepository;
+
+    public List<MonthlyBalanceReport> getMemberReport(int month, int year) {
+        return reportRepository.getMonthlyBalanceReport(month, year);
+    }
+
+    public MonthlyBalanceReport getMemberReport(Integer memberId, int month, int year) {
+        return reportRepository.getMonthlyBalanceReport(memberId, month, year);
+    }
+
 //    public MemberReportDTO getMemberReport(Integer memberId, int month, int year) {
 //        return reportRepository.getMemberReport(memberId, month, year);
 //    }
@@ -30,7 +39,7 @@
 //    public MonthlySummaryDTO getMonthlySummary(int month, int year) {
 //        return reportRepository.getMonthlySummary(month, year);
 //    }
-//
+
 //    public List<MemberReportDTO> getCurrentMonthMemberReport() {
 //        LocalDate now = LocalDate.now();
 //        return getMemberReport(now.getMonthValue(), now.getYear());
@@ -40,7 +49,7 @@
 //        LocalDate now = LocalDate.now();
 //        return getMonthlySummary(now.getMonthValue(), now.getYear());
 //    }
-//}
+}
 //
 //package com.mms.service;
 //
@@ -223,50 +232,88 @@
 //
 //}
 
-package com.mms.service;
+//package com.mms.service;
+//
+//import com.mms.model.CollectionDetail;
+//import com.mms.model.MemberMonthlyReport;
+//import com.mms.model.MonthlyBalanceReport;
+//import com.mms.model.ReportSummary;
+//import com.mms.repository.MonthlyBalanceReportRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.math.BigDecimal;
+//import java.time.Month;
+//import java.util.List;
+//
+//@Service
+//public class ReportService {
+//
+//    @Autowired
+//    private MonthlyBalanceReportRepository reportRepository;
+//
+//    public List<MonthlyBalanceReport> getMonthlyReport(int month, int year) {
+//        return reportRepository.getMonthlyBalanceReport(month, year);
+//    }
+//
+//    public ReportSummary getReportSummary(List<MonthlyBalanceReport> reports, int month, int year) {
+//        ReportSummary summary = new ReportSummary();
+//        summary.setSelectedMonth(month);
+//        summary.setSelectedYear(year);
+//        summary.setMonthName(Month.of(month).name());
+//
+//        if (reports.isEmpty()) {
+//            summary.setTotalMembers(0);
+//            summary.setTotalMeals(0);
+//            summary.setTotalCollection(BigDecimal.ZERO);
+//            summary.setPerMealCost(BigDecimal.ZERO);
+//        } else {
+//            summary.setTotalMembers(reports.size());
+//            summary.setTotalMeals(reports.stream()
+//                    .mapToInt(MonthlyBalanceReport::getMealsTaken)
+//                    .sum());
+//            summary.setTotalCollection(reports.stream()
+//                    .map(MonthlyBalanceReport::getTotalCollection)
+//                    .reduce(BigDecimal.ZERO, BigDecimal::add));
+//            summary.setPerMealCost(reports.get(0).getPerMealCost());
+//        }
+//
+//        return summary;
+//    }
+//
+////    public MemberMonthlyReport getMemberReport(Long memberId, int month, int year) {
+////        MemberMonthlyReport report = reportRepository.getMemberReport(memberId, month, year);
+////        report.setMonth(month);
+////        report.setYear(year);
+////        report.setMonthName(Month.of(month).name());
+////
+////        // Get collection details
+////        List<CollectionDetail> collections =
+////                reportRepository.getMemberCollections(memberId, month, year);
+////        report.setCollections(collections);
+////
+////        return report;
+////    }
+//
+//    public List<MemberMonthlyReport> getAllMembersReport(int month, int year) {
+//        // Get all active members
+//        String sql = "SELECT member_id FROM member WHERE status = 'active'";
+//
+//        @SuppressWarnings("unchecked")
+//        List<Long> memberIds = reportRepository.entityManager
+//                .createNativeQuery(sql)
+//                .getResultList()
+//                .stream()
+//                .map(id -> ((Number) id).longValue())
+//                .toList();
+//
+////        return memberIds.stream()
+////                .map(memberId -> getMemberReport(memberId, month, year))
+////                .toList();
+//        return null;
+//    }
+//
+//
+//
+//}
 
-import com.mms.model.MonthlyBalanceReport;
-import com.mms.model.ReportSummary;
-import com.mms.repository.MonthlyBalanceReportRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.time.Month;
-import java.util.List;
-
-@Service
-public class ReportService {
-
-    @Autowired
-    private MonthlyBalanceReportRepository reportRepository;
-
-    public List<MonthlyBalanceReport> getMonthlyReport(int month, int year) {
-        return reportRepository.getMonthlyBalanceReport(month, year);
-    }
-
-    public ReportSummary getReportSummary(List<MonthlyBalanceReport> reports, int month, int year) {
-        ReportSummary summary = new ReportSummary();
-        summary.setSelectedMonth(month);
-        summary.setSelectedYear(year);
-        summary.setMonthName(Month.of(month).name());
-
-        if (reports.isEmpty()) {
-            summary.setTotalMembers(0);
-            summary.setTotalMeals(0);
-            summary.setTotalCollection(BigDecimal.ZERO);
-            summary.setPerMealCost(BigDecimal.ZERO);
-        } else {
-            summary.setTotalMembers(reports.size());
-            summary.setTotalMeals(reports.stream()
-                    .mapToInt(MonthlyBalanceReport::getMealsTaken)
-                    .sum());
-            summary.setTotalCollection(reports.stream()
-                    .map(MonthlyBalanceReport::getTotalCollection)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add));
-            summary.setPerMealCost(reports.get(0).getPerMealCost());
-        }
-
-        return summary;
-    }
-}

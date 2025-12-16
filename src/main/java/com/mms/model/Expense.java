@@ -18,8 +18,6 @@ public class Expense {
     private String description;
     private Integer categoryId;
     private Integer recordedBy;
-    private Integer month;
-    private Integer year;
     private LocalDateTime createdAt;
 
     // Additional fields for display
@@ -30,7 +28,5 @@ public class Expense {
 
     public Expense() {
         this.expenseDate = LocalDate.now();
-        this.month = LocalDate.now().getMonthValue();
-        this.year = LocalDate.now().getYear();
     }
 }

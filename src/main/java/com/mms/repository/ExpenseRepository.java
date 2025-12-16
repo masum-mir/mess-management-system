@@ -30,8 +30,6 @@ public class ExpenseRepository {
         expense.setCategoryName(rs.getString("category_name"));
         expense.setRecordedBy(rs.getInt("recorded_by"));
         expense.setRecordedByName(rs.getString("recorded_by_name"));
-        expense.setMonth(rs.getInt("month"));
-        expense.setYear(rs.getInt("year"));
         expense.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         return expense;
     };
@@ -51,7 +49,7 @@ public class ExpenseRepository {
                 "JOIN category c ON e.category_id = c.category_id " +
 //                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
                 "JOIN member m2 ON e.recorded_by = m2.member_id " +
-                "WHERE e.month = ? AND e.year = ? " +
+                "WHERE Month(e.month) = ? AND Year(e.year) = ? " +
                 "ORDER BY e.expense_date DESC";
         return jdbcTemplate.query(sql, expenseDetailRowMapper, month, year);
     }
@@ -69,8 +67,8 @@ public class ExpenseRepository {
 
     @Transactional
     public Integer save(Expense expense) {
-        String sql = "INSERT INTO expense (expense_date, amount, description, category_id, recorded_by, month, year) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO expense (expense_date, amount, description, category_id, recorded_by) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -81,8 +79,6 @@ public class ExpenseRepository {
             ps.setString(3, expense.getDescription());
             ps.setInt(4, expense.getCategoryId());
             ps.setInt(5, expense.getRecordedBy());
-            ps.setInt(6, expense.getMonth());
-            ps.setInt(7, expense.getYear());
             return ps;
         }, keyHolder);
 
@@ -91,15 +87,13 @@ public class ExpenseRepository {
 
     public void update(Expense expense) {
         String sql = "UPDATE expense SET expense_date = ?, amount = ?, description = ?, " +
-                "category_id = ?, month = ?, year = ? WHERE expense_id = ?";
+                "category_id = ? WHERE expense_id = ?";
 
         jdbcTemplate.update(sql,
                 java.sql.Date.valueOf(expense.getExpenseDate()),
                 expense.getAmount(),
                 expense.getDescription(),
                 expense.getCategoryId(),
-                expense.getMonth(),
-                expense.getYear(),
                 expense.getExpenseId()
         );
     }

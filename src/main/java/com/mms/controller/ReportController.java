@@ -1,119 +1,22 @@
-//package com.mms.controller;
-//
-//import com.mms.model.dto.MemberReportDTO;
-//import com.mms.model.dto.MonthlySummaryDTO;
-//import com.mms.service.MemberService;
-//import com.mms.service.ReportService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//@Controller
-//@RequestMapping("/reports")
-//public class ReportController {
-//
-//    @Autowired
-//    private ReportService reportService;
-//    @Autowired
-//    private MemberService memberService;
-//
-//    @GetMapping("/monthly-summary")
-//    public String monthlySummary(@RequestParam(required = false) Integer month,
-//                                 @RequestParam(required = false) Integer year,
-//                                 Model model) {
-//        LocalDate now = LocalDate.now();
-//
-//        if (month == null) month = now.getMonthValue();
-//        if (year == null) year = now.getYear();
-//
-//        MonthlySummaryDTO summary = reportService.getMonthlySummary(month, year);
-//
-//        model.addAttribute("summary", summary != null ? summary : new MonthlySummaryDTO());
-//        model.addAttribute("selectedMonth", month);
-//        model.addAttribute("selectedYear", year);
-//
-//        return "report/monthly-summary";
-//    }
-//
-//    @GetMapping("/member-report")
-//    public String memberReport(@RequestParam(required = false) Integer month,
-//                               @RequestParam(required = false) Integer year,
-//                               Model model) {
-//        LocalDate now = LocalDate.now();
-//
-//        if (month == null) month = now.getMonthValue();
-//        if (year == null) year = now.getYear();
-//
-//        List<MemberReportDTO> reports = reportService.getMemberReport(month, year);
-//
-//        model.addAttribute("reports", reports);
-//        model.addAttribute("selectedMonth", month);
-//        model.addAttribute("selectedYear", year);
-//
-//        return "report/member-report";
-//    }
-//
-//    @GetMapping("/meal-report")
-//    public String mealReport(@RequestParam(required = false) Integer month,
-//                             @RequestParam(required = false) Integer year,
-//                             Model model) {
-//        LocalDate now = LocalDate.now();
-//
-//        if (month == null) month = now.getMonthValue();
-//        if (year == null) year = now.getYear();
-//
-//        List<MemberReportDTO> reports = reportService.getMemberReport(month, year);
-//
-//        model.addAttribute("reports", reports);
-//        model.addAttribute("selectedMonth", month);
-//        model.addAttribute("selectedYear", year);
-//
-//        return "report/meal-report";
-//    }
-//
-//    @GetMapping("/member/{id}")
-//    public String individualMemberReport(@PathVariable Integer id,
-//                                         @RequestParam(required = false) Integer month,
-//                                         @RequestParam(required = false) Integer year,
-//                                         Model model) {
-//        LocalDate now = LocalDate.now();
-//        int selectedMonth = (month != null) ? month : now.getMonthValue();
-//        int selectedYear = (year != null) ? year : now.getYear();
-//
-//        MemberReportDTO report = reportService.getMemberReport(id, selectedMonth, selectedYear);
-//
-//        model.addAttribute("report", report);
-//        model.addAttribute("member", memberService.getMemberById(id));
-//        model.addAttribute("selectedMonth", selectedMonth);
-//        model.addAttribute("selectedYear", selectedYear);
-//        model.addAttribute("pageTitle", "Individual Member Report");
-//
-//        return "report/individual-report";
-//    }
-//}
-
-
-// ============= Report Controller =============
 package com.mms.controller;
 
+import com.mms.model.Member;
 import com.mms.model.MonthlyBalanceReport;
-import com.mms.model.ReportSummary;
+import com.mms.model.dto.MemberReportDTO;
+import com.mms.model.dto.MonthlySummaryDTO;
+import com.mms.service.MemberService;
 import com.mms.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/reports")
@@ -121,85 +24,51 @@ public class ReportController {
 
     @Autowired
     private ReportService reportService;
+    @Autowired
+    private MemberService memberService;
 
-    /**
-     * Monthly report page
-     * URL: /reports/monthly?month=12&year=2024
-     */
-//    @GetMapping("/monthly")
-//    public String monthlyReport(@RequestParam(required = false) Integer month,
-//                                @RequestParam(required = false) Integer year,
-//                                Model model) {
-//        LocalDate now = LocalDate.now();
-//        int selectedMonth = (month != null) ? month : now.getMonthValue();
-//        int selectedYear = (year != null) ? year : now.getYear();
-//
-//        List<MonthlyReport> reports = reportService.getMonthlyReport(selectedMonth, selectedYear);
-//        ReportService.MonthlyReportSummary summary = reportService.getMonthlyReportSummary(selectedMonth, selectedYear);
-//
-//        model.addAttribute("reports", reports);
-//        model.addAttribute("summary", summary);
-//        model.addAttribute("selectedMonth", selectedMonth);
-//        model.addAttribute("selectedYear", selectedYear);
-//        model.addAttribute("pageTitle", "Monthly Report");
-//
-//        return "report/monthly";
-//    }
-//
-//    /**
-//     * Individual member report
-//     * URL: /reports/member/{id}?month=12&year=2024
-//     */
-//    @GetMapping("/member/{id}")
-//    public String memberReport(@PathVariable Integer id,
-//                               @RequestParam(required = false) Integer month,
-//                               @RequestParam(required = false) Integer year,
-//                               Model model) {
-//        LocalDate now = LocalDate.now();
-//        int selectedMonth = (month != null) ? month : now.getMonthValue();
-//        int selectedYear = (year != null) ? year : now.getYear();
-//
-//        MonthlyReport report = reportService.getMemberMonthlyReport(id, selectedMonth, selectedYear);
-//
-//        model.addAttribute("report", report);
-//        model.addAttribute("selectedMonth", selectedMonth);
-//        model.addAttribute("selectedYear", selectedYear);
-//        model.addAttribute("pageTitle", "Member Report");
-//
-//        return "report/member";
-//    }
-
-    @GetMapping("/monthly-balance")
-    public String showMonthlyBalanceReport(
-            @RequestParam(required = false) Integer month,
-            @RequestParam(required = false) Integer year,
-            Model model) {
-
-        // Default to current month and year if not provided
+    @GetMapping("/member")
+    public String memberReport(@RequestParam(required = false) Integer month,
+                               @RequestParam(required = false) Integer year,
+                               Model model) {
         LocalDate now = LocalDate.now();
-        int selectedMonth = (month != null) ? month : now.getMonthValue();
-        int selectedYear = (year != null) ? year : now.getYear();
 
-        // Get report data
-        List<MonthlyBalanceReport> reports = reportService.getMonthlyReport(selectedMonth, selectedYear);
-        ReportSummary summary = reportService.getReportSummary(reports, selectedMonth, selectedYear);
+        if (month == null) month = now.getMonthValue();
+        if (year == null) year = now.getYear();
 
-        // Add attributes to model
+        List<MonthlyBalanceReport> reports = reportService.getMemberReport(month, year);
+
         model.addAttribute("reports", reports);
-        model.addAttribute("summary", summary);
-        model.addAttribute("selectedMonth", selectedMonth);
-        model.addAttribute("selectedYear", selectedYear);
-        model.addAttribute("years", List.of(2023, 2024, 2025, 2026));
+        model.addAttribute("selectedMonth", month);
+        model.addAttribute("selectedYear", year);
 
         return "report/monthly-summary";
     }
 
-    // REST API endpoint for AJAX calls
-    @GetMapping("/api/monthly-balance")
-    @ResponseBody
-    public List<MonthlyBalanceReport> getMonthlyBalanceReportApi(
-            @RequestParam int month,
-            @RequestParam int year) {
-        return reportService.getMonthlyReport(month, year);
+    @GetMapping("/member/{id}")
+    public String individualMemberReport(@PathVariable Integer id,
+                                         @RequestParam(required = false) Integer month,
+                                         @RequestParam(required = false) Integer year,
+                                         Model model) {
+        LocalDate now = LocalDate.now();
+        int selectedMonth = (month != null) ? month : now.getMonthValue();
+        int selectedYear = (year != null) ? year : now.getYear();
+
+        MonthlyBalanceReport report = reportService.getMemberReport(id, selectedMonth, selectedYear);
+        Optional<Member> member = memberService.getMemberById(id);
+
+        model.addAttribute("report", report);
+        if(member.isPresent()){
+            model.addAttribute("member", member.get());
+        } else {
+            model.addAttribute("member", null);
+        }
+
+        model.addAttribute("selectedMonth", selectedMonth);
+        model.addAttribute("selectedYear", selectedYear);
+        model.addAttribute("pageTitle", "Individual Member Report");
+
+        return "report/monthly-member-report";
     }
 }
+
