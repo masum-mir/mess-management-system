@@ -39,7 +39,7 @@ public class ExpenseRepository {
                 "FROM expense e " +
                 "JOIN category c ON e.category_id = c.category_id " +
                 "JOIN member m2 ON e.recorded_by = m2.member_id " +
-                "ORDER BY e.expense_date DESC, e.expense_id DESC";
+                "ORDER BY e.expense_date DESC";
         return jdbcTemplate.query(sql, expenseDetailRowMapper);
     }
 
@@ -47,9 +47,8 @@ public class ExpenseRepository {
         String sql = "SELECT e.*, c.category_name, m2.name as recorded_by_name " +
                 "FROM expense e " +
                 "JOIN category c ON e.category_id = c.category_id " +
-//                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
                 "JOIN member m2 ON e.recorded_by = m2.member_id " +
-                "WHERE Month(e.month) = ? AND Year(e.year) = ? " +
+                "WHERE Month(e.expense_date) = ? AND Year(e.expense_date) = ? " +
                 "ORDER BY e.expense_date DESC";
         return jdbcTemplate.query(sql, expenseDetailRowMapper, month, year);
     }
@@ -58,7 +57,6 @@ public class ExpenseRepository {
         String sql = "SELECT e.*, c.category_name, m2.name as recorded_by_name " +
                 "FROM expense e " +
                 "JOIN category c ON e.category_id = c.category_id " +
-//                "JOIN member m1 ON e.paid_by_member_id = m1.member_id " +
                 "JOIN member m2 ON e.recorded_by = m2.member_id " +
                 "WHERE e.expense_id = ?";
         List<Expense> expenses = jdbcTemplate.query(sql, expenseDetailRowMapper, id);
@@ -135,27 +133,4 @@ public class ExpenseRepository {
         jdbcTemplate.update(sql, expenseId);
     }
 
-//    public String shareExpansebyMealindovidual(){
-//        String sql="SELECT\n" +
-//                "    mem.member_id,\n" +
-//                "    t.per_meal_cost\n" +
-//                "FROM member mem\n" +
-//                "CROSS JOIN (\n" +
-//                "    SELECT \n" +
-//                "        SUM(e.amount) / SUM(m.total_attendees) AS per_meal_cost\n" +
-//                "    FROM expense e\n" +
-//                "    JOIN meal m ON e.month = m.month\n" +
-//                "    WHERE e.month = ?\n" +
-//                ") t;\n";
-//        return jdbcTemplate.query(sql);
-//    }
-//
-//    public String shareExpansebyOtherCost(){
-//        String sql="SELECT\n" +
-//                "    SUM(e.amount) / COUNT(m.member_id) AS avg_cost_per_member\n" +
-//                "FROM expense e\n" +
-//                "CROSS JOIN member m\n" +
-//                "WHERE e.month = '12';";
-//        return jdbcTemplate.query(sql);
-//    }
 }

@@ -2,8 +2,6 @@ package com.mms.controller;
 
 import com.mms.model.Member;
 import com.mms.model.MonthlyBalanceReport;
-import com.mms.model.dto.MemberReportDTO;
-import com.mms.model.dto.MonthlySummaryDTO;
 import com.mms.service.MemberService;
 import com.mms.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ public class ReportController {
     @Autowired
     private MemberService memberService;
 
-    @GetMapping("/member")
+    @GetMapping
     public String memberReport(@RequestParam(required = false) Integer month,
                                @RequestParam(required = false) Integer year,
                                Model model) {

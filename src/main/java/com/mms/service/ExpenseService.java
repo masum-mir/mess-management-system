@@ -45,7 +45,7 @@ public class ExpenseService {
     @Transactional
     public void updateExpense(Expense expense) {
         // Delete old shares
-        expenseRepository.deleteExpenseShares(expense.getExpenseId());
+//        expenseRepository.deleteExpenseShares(expense.getExpenseId());
 
         // Update expense
         expenseRepository.update(expense);

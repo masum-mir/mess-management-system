@@ -28,9 +28,7 @@ public class CollectionRepository {
         collection.setAmount(rs.getBigDecimal("amount"));
         collection.setCollectDate(rs.getDate("collect_date").toLocalDate());
         collection.setPaymentMethod(rs.getString("payment_method"));
-        collection.setCollectedBy(rs.getInt("collected_by"));
-        collection.setMonth(rs.getInt("month"));
-        collection.setYear(rs.getInt("year"));
+        collection.setCollectedBy(rs.getInt("collected_by")); 
         collection.setRemarks(rs.getString("remarks"));
         collection.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         return collection;
@@ -45,9 +43,7 @@ public class CollectionRepository {
         collection.setCollectDate(rs.getDate("collect_date").toLocalDate());
         collection.setPaymentMethod(rs.getString("payment_method"));
         collection.setCollectedBy(rs.getInt("collected_by"));
-        collection.setCollectedByName(rs.getString("collected_by_name"));
-        collection.setMonth(rs.getInt("month"));
-        collection.setYear(rs.getInt("year"));
+        collection.setCollectedByName(rs.getString("collected_by_name")); 
         collection.setRemarks(rs.getString("remarks"));
         collection.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         return collection;
@@ -80,7 +76,7 @@ public class CollectionRepository {
                 "COUNT(*) AS transaction_count " +
                 "FROM collection c " +
                 "JOIN member m1 ON c.member_id = m1.member_id " +
-                "WHERE c.month = ? AND c.year = ? " +
+                "WHERE Month(c.collect_date) = ? AND Year(c.collect_date) = ? and status= 'active' " +
                 "GROUP BY c.member_id, m1.name " +
                 "ORDER BY m1.name";
         return jdbcTemplate.query(sql, summaryRowMapper, month, year);
@@ -91,7 +87,7 @@ public class CollectionRepository {
                 "FROM collection c " +
                 "JOIN member m1 ON c.member_id = m1.member_id " +
                 "JOIN member m2 ON c.collected_by = m2.member_id " +
-                "WHERE c.member_id = ? AND c.month = ? AND c.year = ? " +
+                "WHERE c.member_id = ? AND Month(c.collect_date) = ? AND Year(c.collect_date) = ? " +
                 "ORDER BY c.collect_date DESC";
         return jdbcTemplate.query(sql, collectionDetailRowMapper, memberId, month, year);
     }
@@ -102,7 +98,7 @@ public class CollectionRepository {
                 "FROM collection c " +
                 "JOIN member m1 ON c.member_id = m1.member_id " +
                 "JOIN member m2 ON c.collected_by = m2.member_id " +
-                "WHERE c.month = ? AND c.year = ? " +
+                "WHERE Month(c.collect_date) = ? AND Year(c.collect_date) = ? " +
                 "ORDER BY c.collect_date DESC";
         return jdbcTemplate.query(sql, collectionDetailRowMapper, month, year);
     }
@@ -112,7 +108,7 @@ public class CollectionRepository {
                 "FROM collection c " +
                 "JOIN member m1 ON c.member_id = m1.member_id " +
                 "JOIN member m2 ON c.collected_by = m2.member_id " +
-                "WHERE c.member_id = ? AND c.month = ? AND c.year = ?";
+                "WHERE c.member_id = ? AND Month(c.collect_date) = ? AND Year(c.collect_date) = ?";
         return jdbcTemplate.query(sql, collectionDetailRowMapper, memberId, month, year);
     }
 
@@ -128,7 +124,7 @@ public class CollectionRepository {
 
     public Integer save(Collection collection) {
         String sql = "INSERT INTO collection (member_id, amount, collect_date, payment_method, " +
-                "collected_by, month, year, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "collected_by, remarks) VALUES (?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -138,10 +134,8 @@ public class CollectionRepository {
             ps.setBigDecimal(2, collection.getAmount());
             ps.setDate(3, java.sql.Date.valueOf(collection.getCollectDate()));
             ps.setString(4, collection.getPaymentMethod());
-            ps.setInt(5, collection.getCollectedBy());
-            ps.setInt(6, collection.getMonth());
-            ps.setInt(7, collection.getYear());
-            ps.setString(8, collection.getRemarks());
+            ps.setInt(5, collection.getCollectedBy()); 
+            ps.setString(6, collection.getRemarks());
             return ps;
         }, keyHolder);
 
@@ -150,15 +144,13 @@ public class CollectionRepository {
 
     public void update(Collection collection) {
         String sql = "UPDATE collection SET member_id = ?, amount = ?, collect_date = ?, " +
-                "payment_method = ?, month = ?, year = ?, remarks = ? WHERE collection_id = ?";
+                "payment_method = ?, remarks = ? WHERE collection_id = ?";
 
         jdbcTemplate.update(sql,
                 collection.getMemberId(),
                 collection.getAmount(),
                 java.sql.Date.valueOf(collection.getCollectDate()),
-                collection.getPaymentMethod(),
-                collection.getMonth(),
-                collection.getYear(),
+                collection.getPaymentMethod(), 
                 collection.getRemarks(),
                 collection.getCollectionId()
         );

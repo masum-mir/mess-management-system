@@ -18,8 +18,6 @@ public class Collection {
     private LocalDate collectDate;
     private String paymentMethod;
     private Integer collectedBy;
-    private Integer month;
-    private Integer year;
     private String remarks;
     private LocalDateTime createdAt;
 
@@ -30,7 +28,5 @@ public class Collection {
     public Collection() {
         this.collectDate = LocalDate.now();
         this.paymentMethod = "cash";
-        this.month = LocalDate.now().getMonthValue();
-        this.year = LocalDate.now().getYear();
     }
 }

@@ -17,7 +17,8 @@ public class MonthlyBalanceReport {
     private LocalDate reportDate;
     private BigDecimal perMealCost;
     private BigDecimal totalMealCost;
+    private BigDecimal total_cost;
     private BigDecimal totalCollection;
     private BigDecimal perMemberShare;
-    private BigDecimal finalBalance;
+    private BigDecimal currentBalance;
 }

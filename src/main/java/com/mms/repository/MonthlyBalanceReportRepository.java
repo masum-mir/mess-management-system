@@ -29,9 +29,10 @@ public class MonthlyBalanceReportRepository {
         report.setMealsTaken(rs.getInt("meals_taken"));
         report.setPerMealCost(rs.getBigDecimal("per_meal_cost"));
         report.setTotalMealCost(rs.getBigDecimal("total_meal_cost"));
+        report.setTotal_cost(rs.getBigDecimal("total_cost"));
         report.setTotalCollection(rs.getBigDecimal("total_collection"));
         report.setPerMemberShare(rs.getBigDecimal("per_member_share"));
-        report.setFinalBalance(rs.getBigDecimal("final_balance"));
+        report.setCurrentBalance(rs.getBigDecimal("current_balance"));
 
         return report;
     };
@@ -41,13 +42,6 @@ public class MonthlyBalanceReportRepository {
 
         return jdbcTemplate.query(sql, monthlyBalanceReportMapper, month, year);
     }
-
-//    public MonthlyBalanceReport  getMonthlyBalanceReport(Integer memberId, int month, int year) {
-//        String sql = "select * from view_member_expense_report vmer where memberId=? " +
-//                "and Month(vmer.report_date) =? and YEAR(vmer.report_date)=? ";
-//
-//        return (MonthlyBalanceReport) jdbcTemplate.query(sql, monthlyBalanceReportMapper, memberId, month, year);
-//    }
 
     public MonthlyBalanceReport getMonthlyBalanceReport(Integer memberId, int month, int year) {
 

@@ -102,9 +102,6 @@ public class ExpenseController {
                              RedirectAttributes redirectAttributes) {
         try {
 
-            expense.setMonth(expense.getExpenseDate().getMonthValue());
-            expense.setYear(expense.getExpenseDate().getYear());
-
             expenseService.saveExpense(expense);
             redirectAttributes.addFlashAttribute("successMessage",
                     "Expense added successfully!");
@@ -137,8 +134,6 @@ public class ExpenseController {
                                 RedirectAttributes redirectAttributes) {
         try {
             expense.setExpenseId(id);
-            expense.setMonth(expense.getExpenseDate().getMonthValue());
-            expense.setYear(expense.getExpenseDate().getYear());
 
             expenseService.updateExpense(expense);
             redirectAttributes.addFlashAttribute("successMessage",

@@ -27,26 +27,6 @@ public class CollectionController {
         this.memberService = memberService;
     }
 
-//    @GetMapping
-//    public String listCollections(@RequestParam(required = false) Integer month,
-//                                  @RequestParam(required = false) Integer year,
-//                                  Model model) {
-//        LocalDate now = LocalDate.now();
-//        int selectedMonth = (month != null) ? month : now.getMonthValue();
-//        int selectedYear = (year != null) ? year : now.getYear();
-//
-//        List<Collection> collections = collectionService.getCollectionsByMonth(selectedMonth, selectedYear);
-//
-//        model.addAttribute("collections", collections);
-//        model.addAttribute("members", memberService.getActiveMembers());
-//        model.addAttribute("leaders", memberService.getLeaders());
-//        model.addAttribute("selectedMonth", selectedMonth);
-//        model.addAttribute("selectedYear", selectedYear);
-//        model.addAttribute("pageTitle", "Collections");
-//
-//        return "collection/list";
-//    }
-
 @GetMapping
 public String listCollections(@RequestParam(required = false) Integer month,
                               @RequestParam(required = false) Integer year,
@@ -55,34 +35,25 @@ public String listCollections(@RequestParam(required = false) Integer month,
     int selectedMonth = (month != null) ? month : now.getMonthValue();
     int selectedYear = (year != null) ? year : now.getYear();
 
-    // Get aggregated member summaries from SQL
-    List<MemberCollectionDto> memberSummaries =
-            collectionService.getMemberSummaryByMonth(selectedMonth, selectedYear);
+    List<MemberCollectionDto> memberSummaries = collectionService.getMemberSummaryByMonth(selectedMonth, selectedYear);
 
-    // Create list to hold member collections with transactions
-    List<MemberCollectionAggregate> memberCollections = new ArrayList<>();
+    List<MemberCollectionDto> memberCollections = new ArrayList<>();
     BigDecimal totalAmount = BigDecimal.ZERO;
     int totalTransactions = 0;
 
-    // For each member, get their individual transactions
     for (MemberCollectionDto summary : memberSummaries) {
 
-// Add these imports at the top of your CollectionController:
-// import com.mms.model.MemberCollectionSummary;
-// import java.math.BigDecimal;
-// import java.util.ArrayList;
-// import java.util.List;
         List<Collection> transactions = collectionService.getMemberTransactions(
                 summary.getMemberId(), selectedMonth, selectedYear);
 
-        MemberCollectionAggregate aggregate = new MemberCollectionAggregate();
-        aggregate.setMemberId(summary.getMemberId());
-        aggregate.setMemberName(summary.getMemberName());
-        aggregate.setTransactionCount(summary.getTransactionCount());
-        aggregate.setTotalAmount(summary.getTotalAmount());
-        aggregate.setTransactions(transactions);
+        MemberCollectionDto collectionDto = new MemberCollectionDto();
+        collectionDto.setMemberId(summary.getMemberId());
+        collectionDto.setMemberName(summary.getMemberName());
+        collectionDto.setTransactionCount(summary.getTransactionCount());
+        collectionDto.setTotalAmount(summary.getTotalAmount());
+        collectionDto.setTransactions(transactions);
 
-        memberCollections.add(aggregate);
+        memberCollections.add(collectionDto);
         totalAmount = totalAmount.add(summary.getTotalAmount());
         totalTransactions += summary.getTransactionCount();
     }
@@ -96,40 +67,8 @@ public String listCollections(@RequestParam(required = false) Integer month,
     model.addAttribute("selectedYear", selectedYear);
     model.addAttribute("pageTitle", "Collections");
 
-    return "collection/list";
+    return "collection/collection-list";
 }
-
-    // Helper class for view
-    public static class MemberCollectionAggregate {
-        private Integer memberId;
-        private String memberName;
-        private Integer transactionCount;
-        private BigDecimal totalAmount;
-        private List<Collection> transactions;
-
-        // Getters and Setters
-        public Integer getMemberId() { return memberId; }
-        public void setMemberId(Integer memberId) { this.memberId = memberId; }
-
-        public String getMemberName() { return memberName; }
-        public void setMemberName(String memberName) { this.memberName = memberName; }
-
-        public Integer getTransactionCount() { return transactionCount; }
-        public void setTransactionCount(Integer transactionCount) {
-            this.transactionCount = transactionCount;
-        }
-
-        public BigDecimal getTotalAmount() { return totalAmount; }
-        public void setTotalAmount(BigDecimal totalAmount) {
-            this.totalAmount = totalAmount;
-        }
-
-        public List<Collection> getTransactions() { return transactions; }
-        public void setTransactions(List<Collection> transactions) {
-            this.transactions = transactions;
-        }
-    }
-
     @GetMapping("/add")
     public String showAddForm(Model model) {
         Collection collection = new Collection();
@@ -147,8 +86,6 @@ public String listCollections(@RequestParam(required = false) Integer month,
     public String addCollection(@ModelAttribute Collection collection,
                                 RedirectAttributes redirectAttributes) {
         try {
-            collection.setMonth(collection.getCollectDate().getMonthValue());
-            collection.setYear(collection.getCollectDate().getYear());
 
             collectionService.saveCollection(collection);
             redirectAttributes.addFlashAttribute("successMessage",
@@ -182,8 +119,6 @@ public String listCollections(@RequestParam(required = false) Integer month,
                                    RedirectAttributes redirectAttributes) {
         try {
             collection.setCollectionId(id);
-            collection.setMonth(collection.getCollectDate().getMonthValue());
-            collection.setYear(collection.getCollectDate().getYear());
 
             collectionService.updateCollection(collection);
             redirectAttributes.addFlashAttribute("successMessage",

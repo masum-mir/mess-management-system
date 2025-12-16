@@ -29,14 +29,6 @@ public class MemberController {
         return "member/list";
     }
 
-//    @GetMapping("/add")
-//    public String showAddForm(Model model) {
-//        model.addAttribute("member", new Member());
-//        model.addAttribute("pageTitle", "Add New Member");
-//        model.addAttribute("leaders", memberService.getLeaders());
-//        return "member";
-//    }
-
     @PostMapping("/add")
     public String addMember(@ModelAttribute Member member,
                             RedirectAttributes redirectAttributes) {
