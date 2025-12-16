@@ -13,6 +13,10 @@ public class ReportService {
     @Autowired
     private MonthlyBalanceReportRepository reportRepository;
 
+    public List<MonthlyBalanceReport> getMemberReport() {
+        return reportRepository.getMonthlyBalanceReport();
+    }
+
     public List<MonthlyBalanceReport> getMemberReport(int month, int year) {
         return reportRepository.getMonthlyBalanceReport(month, year);
     }
@@ -20,6 +24,7 @@ public class ReportService {
     public MonthlyBalanceReport getMemberReport(Integer memberId, int month, int year) {
         return reportRepository.getMonthlyBalanceReport(memberId, month, year);
     }
+
 
 //    public MemberReportDTO getMemberReport(Integer memberId, int month, int year) {
 //        return reportRepository.getMemberReport(memberId, month, year);

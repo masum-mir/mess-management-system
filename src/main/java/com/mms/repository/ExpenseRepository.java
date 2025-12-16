@@ -101,11 +101,6 @@ public class ExpenseRepository {
         jdbcTemplate.update(sql, id);
     }
 
-//    public Double findIndividualExpend(Integer expense_id) {
-//        String sql = ""
-//    }
-
-//    --------------------------------------------------- delte
     // Expense Share methods
     private final RowMapper<ExpenseShare> expenseShareRowMapper = (rs, rowNum) -> {
         ExpenseShare share = new ExpenseShare();

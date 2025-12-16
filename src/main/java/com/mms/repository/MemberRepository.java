@@ -65,30 +65,6 @@ public class MemberRepository {
         return members.isEmpty() ? Optional.empty() : Optional.of(members.get(0));
     }
 
-//    public Integer save(Member member) {
-//        String sql = "INSERT INTO member (name, phone, email, address, password, " +
-//                "join_date, status, is_manager, manager_id) " +
-//                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        jdbcTemplate.update(connection -> {
-//            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//            ps.setString(1, member.getName());
-//            ps.setString(3, member.getPhone());
-//            ps.setString(4, member.getEmail());
-//            ps.setString(5, member.getAddress());
-//            ps.setString(6, member.getPassword());
-//            ps.setDate(7, java.sql.Date.valueOf(member.getJoinDate()));
-//            ps.setString(8, member.getStatus());
-//            ps.setBoolean(9, member.getIsLeader());
-//            ps.setObject(10, member.getManagerId());
-//            return ps;
-//        }, keyHolder);
-//
-//        return keyHolder.getKey().intValue();
-//    }
-    
 public Integer save(Member member) {
     String sql = "INSERT INTO member (name, phone, email, address, password, " +
             "join_date, status, is_manager, manager_id) " +

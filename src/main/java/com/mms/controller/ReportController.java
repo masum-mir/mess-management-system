@@ -26,7 +26,18 @@ public class ReportController {
     private MemberService memberService;
 
     @GetMapping
-    public String memberReport(@RequestParam(required = false) Integer month,
+    public String memberReport(Model model) {
+        LocalDate now = LocalDate.now();
+
+        List<MonthlyBalanceReport> reports = reportService.getMemberReport();
+
+        model.addAttribute("reports", reports);
+
+        return "report/monthly-summary";
+    }
+
+    @GetMapping("/monthly-balance")
+    public String memberReportWithMonthAndDate(@RequestParam(required = false) Integer month,
                                @RequestParam(required = false) Integer year,
                                Model model) {
         LocalDate now = LocalDate.now();
@@ -40,8 +51,9 @@ public class ReportController {
         model.addAttribute("selectedMonth", month);
         model.addAttribute("selectedYear", year);
 
-        return "report/monthly-summary";
+        return "report/previous-month-report";
     }
+
 
     @GetMapping("/member/{id}")
     public String individualMemberReport(@PathVariable Integer id,
