@@ -15,9 +15,9 @@ public class RoleInterceptor implements HandlerInterceptor {
         // URLs that require leader/manager role
         String[] leaderOnlyUrls = {
                 "/members","/members/add", "/members/edit", "/members/delete",
-                "/expenses/add", "/expenses/edit", "/expenses/delete",
-                "/collections/add", "/collections/edit", "/collections/delete",
-                "/meals/add", "/meals/edit", "/meals/delete", "/meals/attendance"
+                "/expenses","/expenses/add", "/expenses/edit", "/expenses/delete",
+                "/collections","/collections/add", "/collections/edit", "/collections/delete",
+                "/meals","/meals/add", "/meals/edit", "/meals/delete", "/meals/attendance"
         };
 
         // Check if current URL requires leader role

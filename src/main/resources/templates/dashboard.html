@@ -1,185 +1,231 @@
+
+<!--    <!DOCTYPE html>-->
+<!--    <html xmlns:th="http://www.thymeleaf.org">-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--        <title>Dashboard - Mess Management System</title>-->
+<!--        <link rel="stylesheet" th:href="@{/css/style.css}">-->
+<!--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+
+<!--        <style>-->
+<!--            /* Card Icon Style */-->
+<!--            .dashboard-card {-->
+<!--                position: relative;-->
+<!--                overflow: hidden;-->
+<!--                padding: 20px;-->
+<!--                border-radius: 12px;-->
+<!--                color: #fff;-->
+<!--            }-->
+<!--            .dashboard-card svg {-->
+<!--                position: absolute;-->
+<!--                right: 20px;-->
+<!--                bottom: 20px;-->
+<!--                opacity: 0.2;-->
+<!--                width: 70px;-->
+<!--                height: 70px;-->
+<!--            }-->
+<!--            .chat-box {-->
+<!--                height: 350px;-->
+<!--                overflow-y: auto;-->
+<!--            }-->
+<!--            .direct-chat-img {-->
+<!--                width: 40px;-->
+<!--                height: 40px;-->
+<!--                border-radius: 50%;-->
+<!--                object-fit: cover;-->
+<!--                margin-right: 10px;-->
+<!--            }-->
+<!--            .direct-chat-text {-->
+<!--                background: #e9ecef;-->
+<!--                padding: 10px 15px;-->
+<!--                border-radius: 10px;-->
+<!--                display: inline-block;-->
+<!--            }-->
+<!--            .direct-chat-msg.end {-->
+<!--                text-align: right;-->
+<!--            }-->
+<!--            .direct-chat-msg.end .direct-chat-text {-->
+<!--                background: #cfe2ff;-->
+<!--            }-->
+<!--        </style>-->
+<!--    </head>-->
+<!--    <body>-->
+<!--    <div th:include="navbar::navbar"></div>-->
+<!--    <div class="container">-->
+
+<!--        <h1 style="margin-bottom: 5rem;">Dashboard</h1>-->
+<!--&lt;!&ndash;        <div class="dashboard-cards">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="dashboard-card info">&ndash;&gt;-->
+<!--&lt;!&ndash;                <h3>Active Members</h3>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="value" th:text="${activeMemberCount}">0</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+
+<!--        &lt;!&ndash; Row 1: Widgets &ndash;&gt;-->
+<!--        <div class="row g-4">-->
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="dashboard-card bg-primary">-->
+<!--                    <h2>Member</h2>-->
+<!--                    <svg viewBox="0 0 24 24"><path d="M2.25 2.25a.75.75 ..."/></svg>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="dashboard-card bg-success">-->
+<!--                    <h2>Expenses</h2>-->
+<!--                    <svg viewBox="0 0 24 24"><path d="M18.375 2.25c-1.035..."/></svg>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="dashboard-card bg-warning text-dark">-->
+<!--                    <h2>Meals</h2>-->
+<!--                    <svg viewBox="0 0 24 24"><path d="M6.25 6.375a4.125..."/></svg>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="col-lg-3 col-md-6">-->
+<!--                <div class="dashboard-card bg-danger">-->
+<!--                    <h2>Report</h2>-->
+<!--                    <svg viewBox="0 0 24 24"><path d="M2.25 13.5a8.25..."/></svg>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Bootstrap JS &ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--    </body>-->
+<!--    </html>-->
+
+<!--</div>-->
+
+<!--<script th:src="@{/js/script.js}"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Mess Management System</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .dashboard-card {
+            position: relative;
+            overflow: hidden;
+            padding: 25px;
+            border-radius: 12px;
+            color: #fff;
+            min-height: 140px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-card svg {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            opacity: 0.2;
+            width: 70px;
+            height: 70px;
+            fill: white;
+        }
+
+        a.dashboard-link {
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
+
 <div th:include="navbar::navbar"></div>
-<div class="container">
-<!--    &lt;!&ndash; Flash Messages &ndash;&gt;-->
-<!--    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>-->
-<!--    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>-->
 
-    <h1 style="margin-bottom: 2rem;">Dashboard</h1>
+<div class="container mt-4">
 
-<!--    &lt;!&ndash; Dashboard Cards &ndash;&gt;-->
-    <div class="dashboard-cards">
-        <div class="dashboard-card info">
-            <h3>Active Members</h3>
-            <div class="value" th:text="${activeMemberCount}">0</div>
-        </div>
-<!--        <div class="dashboard-card success">-->
-<!--            <h3>Total Collections (This Month)</h3>-->
-<!--            <div class="value" th:text="${#numbers.formatDecimal(summary.totalCollections, 0, 'COMMA', 2, 'POINT')} + ' ৳'">0 ৳</div>-->
-<!--        </div>-->
-<!--        <div class="dashboard-card warning">-->
-<!--            <h3>Total Expenses (This Month)</h3>-->
-<!--            <div class="value" th:text="${#numbers.formatDecimal(summary.totalExpenses, 0, 'COMMA', 2, 'POINT')} + ' ৳'">0 ৳</div>-->
-<!--        </div>-->
-<!--        <div class="dashboard-card" th:classappend="${summary.balance >= 0 ? 'success' : 'warning'}">-->
-<!--            <h3>Balance</h3>-->
-<!--            <div class="value" th:text="${#numbers.formatDecimal(summary.balance, 0, 'COMMA', 2, 'POINT')} + ' ৳'">0 ৳</div>-->
-<!--        </div>-->
-    </div>
+    <h1 class="mb-5">Dashboard</h1>
 
-<!--    &lt;!&ndash; Monthly Summary Card &ndash;&gt;-->
-    <div class="card">
-        <div class="card-header">
-            Current Month Summary
-            <span style="font-size: 1rem; font-weight: normal; color: #7f8c8d;">
-                    (Month: <span th:text="${currentMonth}">1</span>, Year: <span th:text="${currentYear}">2024</span>)
-                </span>
-        </div>
+    <div class="row g-4">
 
-        <div class="form-row">
-<!--            <div class="form-group">-->
-<!--                <label class="form-label">Total Meal Costs</label>-->
-<!--                <div style="font-size: 1.5rem; font-weight: bold; color: #3498db;">-->
-<!--                    <span th:text="${#numbers.formatDecimal(summary.totalMealCosts, 0, 'COMMA', 2, 'POINT')}">0</span> ৳-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label class="form-label">Total Meals Served</label>-->
-<!--                <div style="font-size: 1.5rem; font-weight: bold; color: #3498db;">-->
-<!--                    <span th:text="${summary.totalMealsServed}">0</span>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label class="form-label">Active Members</label>-->
-<!--                <div style="font-size: 1.5rem; font-weight: bold; color: #3498db;">-->
-<!--                    <span th:text="${summary.activeMembers}">0</span>-->
-<!--                </div>-->
-<!--            </div>-->
-        </div>
-    </div>
-
-<!--    &lt;!&ndash; Quick Actions &ndash;&gt;-->
-<!--    <div class="card">-->
-<!--        <div class="card-header">Quick Actions</div>-->
-<!--        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">-->
-<!--            <a th:href="@{/members/add}" class="btn btn-success">➕ Add Member</a>-->
-<!--            <a th:href="@{/expenses/add}" class="btn btn-warning">💰 Add Expense</a>-->
-<!--            <a th:href="@{/collections/add}" class="btn">💵 Add Collection</a>-->
-<!--            <a th:href="@{/meals/add}" class="btn">🍽️ Add Meal</a>-->
-<!--            <a th:href="@{/reports/member-report}" class="btn">📊 View Reports</a>-->
-<!--        </div>-->
-<!--    </div>-->
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Dashboard - Bootstrap 5</title>
-
-        <!-- Bootstrap 5 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-        <style>
-            /* Card Icon Style */
-            .dashboard-card {
-                position: relative;
-                overflow: hidden;
-                padding: 20px;
-                border-radius: 12px;
-                color: #fff;
-            }
-            .dashboard-card svg {
-                position: absolute;
-                right: 20px;
-                bottom: 20px;
-                opacity: 0.2;
-                width: 70px;
-                height: 70px;
-            }
-            .chat-box {
-                height: 350px;
-                overflow-y: auto;
-            }
-            .direct-chat-img {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-                margin-right: 10px;
-            }
-            .direct-chat-text {
-                background: #e9ecef;
-                padding: 10px 15px;
-                border-radius: 10px;
-                display: inline-block;
-            }
-            .direct-chat-msg.end {
-                text-align: right;
-            }
-            .direct-chat-msg.end .direct-chat-text {
-                background: #cfe2ff;
-            }
-        </style>
-    </head>
-
-
-    <body>
-
-    <div class="container-fluid py-4">
-
-        <!-- Row 1: Widgets -->
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
+        <!-- Members -->
+        <div class="col-lg-4 col-md-6"  th:if="${currentMember.isManager}">
+            <a href="/members" class="dashboard-link">
                 <div class="dashboard-card bg-primary">
-                    <h2>Member</h2>
-                    <svg viewBox="0 0 24 24"><path d="M2.25 2.25a.75.75 ..."/></svg>
+                    <h2>Members</h2>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+                    </svg>
                 </div>
-            </div>
+            </a>
+        </div>
 
-            <div class="col-lg-3 col-md-6">
+        <div class="col-lg-4 col-md-6"   th:if="${currentMember.isManager}">
+            <a href="/collections" class="dashboard-link">
+                <div class="dashboard-card bg-info">
+                    <h2>Collections</h2>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21 7H3V5h18v2zm0 4H3v8h18v-8zm-2 4h-4v2h4v-2z"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <!-- Expenses -->
+        <div class="col-lg-4 col-md-6"  th:if="${currentMember.isManager}">
+            <a href="/expenses" class="dashboard-link">
                 <div class="dashboard-card bg-success">
                     <h2>Expenses</h2>
-                    <svg viewBox="0 0 24 24"><path d="M18.375 2.25c-1.035..."/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 1C5.9 1 1 5.9 1 12s4.9 11 11 11 11-4.9 11-11S18.1 1 12 1zm1 17.9V20h-2v-1.1c-1.5-.3-2.7-1.4-2.7-3.1h2c0 .9.7 1.5 1.7 1.5s1.7-.6 1.7-1.4c0-.9-.8-1.3-2-1.7-1.5-.5-3.2-1.2-3.2-3.3 0-1.6 1.1-2.7 2.5-3V4h2v1.1c1.4.3 2.5 1.3 2.5 2.9h-2c0-.8-.5-1.4-1.5-1.4-.8 0-1.5.5-1.5 1.2 0 .8.7 1.1 2 1.6 1.5.5 3.2 1.3 3.2 3.4 0 1.7-1.2 2.9-2.7 3.1z"/>
+                    </svg>
                 </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="dashboard-card bg-warning text-dark">
-                    <h2>Meals</h2>
-                    <svg viewBox="0 0 24 24"><path d="M6.25 6.375a4.125..."/></svg>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="dashboard-card bg-danger">
-                    <h2>Report</h2>
-                    <svg viewBox="0 0 24 24"><path d="M2.25 13.5a8.25..."/></svg>
-                </div>
-            </div>
+            </a>
         </div>
 
+        <!-- Meals -->
+        <div class="col-lg-4 col-md-6"   th:if="${currentMember.isManager}">
+            <a href="/meals" class="dashboard-link">
+                <div class="dashboard-card bg-warning text-dark">
+                    <h2>Meals</h2>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M8 2v7H6V2H4v7c0 1.7 1.3 3 3 3v10h2V12c1.7 0 3-1.3 3-3V2H8zm8 0v8h-2V2h-2v8c0 2.2 1.8 4 4 4v8h2V2h-2z"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <!-- Reports -->
+        <div class="col-lg-4 col-md-6">
+            <a href="/reports" class="dashboard-link">
+                <div class="dashboard-card bg-danger">
+                    <h2>Reports</h2>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 3h18v2H3V3zm2 4h14v14H5V7zm2 2v10h10V9H7z"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
 
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    </body>
-    </html>
-
 </div>
 
-<script th:src="@{/js/script.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+

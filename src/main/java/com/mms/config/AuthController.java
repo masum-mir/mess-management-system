@@ -37,6 +37,7 @@ public class AuthController {
             SessionHelper.setLoggedInMember(session, member);
             redirectAttributes.addFlashAttribute("successMessage",
                     "Welcome back, " + member.getName() + "!");
+            session.setAttribute("loggedInMember", member);
             return "redirect:/";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage",

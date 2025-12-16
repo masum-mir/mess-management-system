@@ -32,6 +32,9 @@ public class MemberService {
     public Optional<Member> getMemberById(Integer id) {
         return memberRepository.findById(id);
     }
+    public Optional<Member> getByPhone(String phone) {
+        return memberRepository.findByPhone(phone);
+    }
 
 @Transactional
 public Member saveMember(Member member) {
