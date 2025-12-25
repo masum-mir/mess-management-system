@@ -207,14 +207,17 @@ spring.thymeleaf.suffix=.html
 
 ## 📸 Screenshots
 
+
 ### Login
 <p align="center">
   <img width="800" alt="Login Page" src="https://github.com/user-attachments/assets/0af4b8ba-1ee9-4125-833c-2f4044a948ad" />
 </p>
+
 ### Dashboard
 <p align="center">
   <img width="800" alt="Dashboard" src="https://github.com/user-attachments/assets/e30d688a-cc81-467c-ac00-ff5ce9e9980c" />
 </p>
+
 ### Members Management
 <p align="center"><i>Manage member profiles, add new members, and update member information</i></p>
 <p align="center">
@@ -226,6 +229,7 @@ spring.thymeleaf.suffix=.html
 <p align="center">
   <img width="600" alt="Edit Member" src="https://github.com/user-attachments/assets/15210dea-698d-4f01-9712-c5574cc7f845" />
 </p>
+
 ### Payment Collections
 <p align="center"><i>Track all financial deposits with payment methods and dates</i></p>
 <p align="center">
@@ -234,6 +238,7 @@ spring.thymeleaf.suffix=.html
 <p align="center">
   <img width="500" alt="Add Payment" src="https://github.com/user-attachments/assets/e5bb7615-0ff8-4060-9dab-9ac69f8ea1f9" />
 </p>
+
 ### Expense Management
 <p align="center"><i>Record and categorize all mess expenses with detailed descriptions</i></p>
 <p align="center">
@@ -244,7 +249,8 @@ spring.thymeleaf.suffix=.html
 </p>
 <p align="center">
   <img width="600" alt="Edit Expense" src="https://github.com/user-attachments/assets/4da94585-fa13-48f9-9453-23012c04e9a8" />
-</p>
+</p> 
+
 ### Meal Entry
 <p align="center"><i>Log daily meal attendance for accurate cost calculations</i></p>
 <p align="center">
@@ -253,6 +259,7 @@ spring.thymeleaf.suffix=.html
 <p align="center">
   <img width="800" alt="Meal Details" src="https://github.com/user-attachments/assets/250c4710-3d8f-415a-b70d-70cfde366c70" />
 </p>
+
 ### Reports
 <p align="center"><i>Generate comprehensive monthly reports with balance summaries</i></p>
 <p align="center">
