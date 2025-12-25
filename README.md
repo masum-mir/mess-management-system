@@ -207,45 +207,60 @@ spring.thymeleaf.suffix=.html
 
 ## 📸 Screenshots
 
-## Login
-<img width="1221" height="747" alt="image" src="https://github.com/user-attachments/assets/0af4b8ba-1ee9-4125-833c-2f4044a948ad" />
-
-## Dashboard
-<img width="1811" height="950" alt="image" src="https://github.com/user-attachments/assets/e30d688a-cc81-467c-ac00-ff5ce9e9980c" />
-
+### Login
+<p align="center">
+  <img width="800" alt="Login Page" src="https://github.com/user-attachments/assets/0af4b8ba-1ee9-4125-833c-2f4044a948ad" />
+</p>
+### Dashboard
+<p align="center">
+  <img width="800" alt="Dashboard" src="https://github.com/user-attachments/assets/e30d688a-cc81-467c-ac00-ff5ce9e9980c" />
+</p>
 ### Members Management
-Manage member profiles, add new members, and update member information.
-<img width="1278" height="563" alt="image" src="https://github.com/user-attachments/assets/6a4909cb-ec34-47ce-8171-c09138b4df5e" />
-
-<img width="742" height="459" alt="image" src="https://github.com/user-attachments/assets/4a898572-4b4c-43aa-b814-564586e5fa54" />
-
-<img width="742" height="459" alt="image" src="https://github.com/user-attachments/assets/15210dea-698d-4f01-9712-c5574cc7f845" />
-
+<p align="center"><i>Manage member profiles, add new members, and update member information</i></p>
+<p align="center">
+  <img width="800" alt="Members List" src="https://github.com/user-attachments/assets/6a4909cb-ec34-47ce-8171-c09138b4df5e" />
+</p>
+<p align="center">
+  <img width="600" alt="Add Member" src="https://github.com/user-attachments/assets/4a898572-4b4c-43aa-b814-564586e5fa54" />
+</p>
+<p align="center">
+  <img width="600" alt="Edit Member" src="https://github.com/user-attachments/assets/15210dea-698d-4f01-9712-c5574cc7f845" />
+</p>
 ### Payment Collections
-Track all financial deposits with payment methods and dates.
-<img width="1221" height="747" alt="image" src="https://github.com/user-attachments/assets/470d2bf1-f476-49bf-ba59-399e79941e29" />
-
-<img width="461" height="640" alt="image" src="https://github.com/user-attachments/assets/e5bb7615-0ff8-4060-9dab-9ac69f8ea1f9" />
-
+<p align="center"><i>Track all financial deposits with payment methods and dates</i></p>
+<p align="center">
+  <img width="800" alt="Payment Collections List" src="https://github.com/user-attachments/assets/470d2bf1-f476-49bf-ba59-399e79941e29" />
+</p>
+<p align="center">
+  <img width="500" alt="Add Payment" src="https://github.com/user-attachments/assets/e5bb7615-0ff8-4060-9dab-9ac69f8ea1f9" />
+</p>
 ### Expense Management
-Record and categorize all mess expenses with detailed descriptions.
-<img width="1244" height="879" alt="image" src="https://github.com/user-attachments/assets/c8efef42-8c88-4eb7-ae9c-1beedfda0f59" />
-
-<img width="720" height="588" alt="image" src="https://github.com/user-attachments/assets/843a4e22-7bfd-4492-b88a-6371fcb6bba8" />
-
-<img width="720" height="588" alt="image" src="https://github.com/user-attachments/assets/4da94585-fa13-48f9-9453-23012c04e9a8" />
-
+<p align="center"><i>Record and categorize all mess expenses with detailed descriptions</i></p>
+<p align="center">
+  <img width="800" alt="Expense List" src="https://github.com/user-attachments/assets/c8efef42-8c88-4eb7-ae9c-1beedfda0f59" />
+</p>
+<p align="center">
+  <img width="600" alt="Add Expense" src="https://github.com/user-attachments/assets/843a4e22-7bfd-4492-b88a-6371fcb6bba8" />
+</p>
+<p align="center">
+  <img width="600" alt="Edit Expense" src="https://github.com/user-attachments/assets/4da94585-fa13-48f9-9453-23012c04e9a8" />
+</p>
 ### Meal Entry
-Log daily meal attendance for accurate cost calculations.
-<img width="1232" height="783" alt="image" src="https://github.com/user-attachments/assets/e1a3d2a3-ab1a-4eff-b1de-40bdbedd85b8" />
-
-<img width="1232" height="941" alt="image" src="https://github.com/user-attachments/assets/250c4710-3d8f-415a-b70d-70cfde366c70" />
-
+<p align="center"><i>Log daily meal attendance for accurate cost calculations</i></p>
+<p align="center">
+  <img width="800" alt="Meal Entry List" src="https://github.com/user-attachments/assets/e1a3d2a3-ab1a-4eff-b1de-40bdbedd85b8" />
+</p>
+<p align="center">
+  <img width="800" alt="Meal Details" src="https://github.com/user-attachments/assets/250c4710-3d8f-415a-b70d-70cfde366c70" />
+</p>
 ### Reports
-Generate comprehensive monthly reports with balance summaries.
-<img width="1253" height="823" alt="image" src="https://github.com/user-attachments/assets/17eba1ee-d9bd-4b5f-820d-139d56c7e306" />
-
-<img width="1086" height="835" alt="image" src="https://github.com/user-attachments/assets/f338b58f-542b-44d3-99f0-96ed572be06e" />
+<p align="center"><i>Generate comprehensive monthly reports with balance summaries</i></p>
+<p align="center">
+  <img width="800" alt="Summary Report" src="https://github.com/user-attachments/assets/17eba1ee-d9bd-4b5f-820d-139d56c7e306" />
+</p>
+<p align="center">
+  <img width="800" alt="Detailed Report" src="https://github.com/user-attachments/assets/f338b58f-542b-44d3-99f0-96ed572be06e" />
+</p>
 
 ### Course Information
 - **Course**: CSE302 - Database Management System
