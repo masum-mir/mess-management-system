@@ -4,15 +4,14 @@ A comprehensive web-based application designed to digitize and streamline daily 
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Database Schema](#database-schema)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Screenshots](#screenshots)
-- [Contributors](#contributors)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Technology Stack](#-technology-stack)
+- [Database Schema](#-database-schema)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Usage](#-usage)
+- [Screenshots](#-screenshots) 
 
 ## 🎯 Overview
 
