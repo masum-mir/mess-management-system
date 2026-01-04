@@ -1,12 +1,15 @@
 
-# Course Information
+# <p align="center"> Course Information </p>
+#
 - **Course**: CSE302 - Database Management System
 - **Section**: 03
 - **Instructor**: Md Mostofa Kamal Rasel, Associate Professor, Dept of CSE
 - **Institution**: East West University
 - **Submission Date**: December 17, 2025
+#
+#
 
-# Mess Management System
+#  <p align="center">Mess Management System </p>
 
 A comprehensive web-based application designed to digitize and streamline daily mess operations, including meal tracking, expense management, and financial record-keeping.
 
